@@ -1,0 +1,36 @@
+{
+  "newsDialogues": [
+    {
+      "name": "populationLvl0",
+      "line": "2 ratas pelean por una manzana \n con Linkin Park de fondo"
+    },
+    {
+      "name": "populationLvl1",
+      "line": "Adan y Eva inventan el sexo"
+    },
+    {
+      "name": "populationLvl2",
+      "line": "Eva: Im tired of your fucking shit \n Adan: Im not a fucking kavron"
+    },
+    {
+      "name": "populationLvl3",
+      "line": "Adan y Eva descubren el incesto..."
+    },
+    {
+      "name": "populationLvl4",
+      "line": "Se anuncia la salida de \n Final Fantasy 69"
+    },
+    {
+      "name": "populationLvl4",
+      "line": "Hoy, año 1945, hace una  \n mañana soleada en Hiroshima, Japon"
+    },
+    {
+      "name": "populationLvl4",
+      "line": "Se detecta la primera señal de radio \n alienigena  \"Que te callas tu puta\""
+    },
+    {
+      "name": "populationLvl4",
+      "line": "Achus (Una persona cualquiera en Wuhan)"
+    }
+  ]
+}
