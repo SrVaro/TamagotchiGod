@@ -1,0 +1,140 @@
+{
+  "main": {
+    "id": "59d551e02523054d",
+    "type": "split",
+    "children": [
+      {
+        "id": "b903eab47e8b16d3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "214a33cb50aedc66",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6350f7481265623c",
+    "type": "split",
+    "children": [
+      {
+        "id": "40f5a1da0af36dc1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6a001e5e1382797d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "4a4e645cec1df37a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "0f431b4b44a9e14c",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "right": {
+    "id": "b8a7ddd93bc3f693",
+    "type": "split",
+    "children": [
+      {
+        "id": "3fa12c9821478cca",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0e56e957f4d249ed",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e17dcc7ff1ec44a0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "75d062bfd9d4ec76",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "f062f543de246285",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "214a33cb50aedc66",
+  "lastOpenFiles": [
+    "Primera cutescene.md",
+    "God Inc™.md",
+    "Empleado resignado.md",
+    "Paco.md",
+    "Kit de Iniciacion Planetario.md"
+  ]
+}

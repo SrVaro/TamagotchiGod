@@ -1,4 +1,27 @@
 {
+  "cutsceneDialogue": [
+    {
+      "name": "text1",
+      "line": "Bienvenido a God Inc™! \n Soy Empleado resignado y te guiare durante tu primer dia de trabajo mientras aprendes todo lo necesario de tu nuevo puesto de trabajo.",
+      "interaction": "Y"
+    },
+    {
+      "name": "text2",
+      "line": "Este primer planeta forma parte del Kit de Iniciacion Planetario entregado a todos los novatos",
+      "interaction": "Y"
+    },
+    {
+      "name": "text3",
+      "line": "Este Kit limitado pero completo te permetira acostumbrarte a ser un buen Dios™",
+      "interaction": "Y"
+    },
+    {
+      "name": "text4",
+      "line": "Blablabla4",
+      "interaction": "Y"
+    }
+
+  ],
   "newsDialogues": [
     {
       "name": "populationLvl0",

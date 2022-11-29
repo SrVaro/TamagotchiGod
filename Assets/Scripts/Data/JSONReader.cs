@@ -25,11 +25,19 @@ public class JSONReader : MonoBehaviour
 [System.Serializable]
 public class DialogueList {
     public newsDialogues[] newsDialogues;
+    public cutsceneDialogue[] cutsceneDialogue;
 }
 
 [System.Serializable]
 public class newsDialogues {
     public string line;
     public string name;
+}
+
+[System.Serializable]
+public class cutsceneDialogue {
+    public string line;
+    public string name;
+    public string interaction;
 }
 
