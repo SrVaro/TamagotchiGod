@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "b903eab47e8b16d3",
+        "id": "cf6bd45c550d9409",
         "type": "tabs",
         "children": [
           {
-            "id": "214a33cb50aedc66",
+            "id": "86ee8b9d403bd5cf",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Primera cutescene.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -82,6 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Primera cutescene.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,6 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Primera cutescene.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -119,7 +125,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Primera cutescene.md"
+              }
             }
           }
         ]
@@ -129,10 +137,11 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "214a33cb50aedc66",
+  "active": "86ee8b9d403bd5cf",
   "lastOpenFiles": [
-    "Primera cutescene.md",
     "God Inc™.md",
+    "Dios™.md",
+    "Primera cutescene.md",
     "Empleado resignado.md",
     "Paco.md",
     "Kit de Iniciacion Planetario.md"

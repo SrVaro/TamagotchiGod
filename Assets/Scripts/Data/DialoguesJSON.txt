@@ -1,24 +1,44 @@
 {
   "cutsceneDialogue": [
     {
-      "name": "text1",
-      "line": "Bienvenido a God Inc™! \n Soy Empleado resignado y te guiare durante tu primer dia de trabajo mientras aprendes todo lo necesario de tu nuevo puesto de trabajo.",
-      "interaction": "Y"
+      "name": "2",
+      "line": "Bienvenido a God Inc™! Soy Empleado resignado y te guiare durante tu primer dia de trabajo mientras aprendes todo lo necesario de tu nuevo puesto de trabajo.",
+      "interaction": "WaitForBasicInput"
     },
     {
-      "name": "text2",
+      "name": "3",
       "line": "Este primer planeta forma parte del Kit de Iniciacion Planetario entregado a todos los novatos",
-      "interaction": "Y"
+      "interaction": "WaitForBasicInput"
     },
     {
-      "name": "text3",
+      "name": "4",
       "line": "Este Kit limitado pero completo te permetira acostumbrarte a ser un buen Dios™",
-      "interaction": "Y"
+      "interaction": "WaitForBasicInput"
     },
     {
-      "name": "text4",
-      "line": "Blablabla4",
-      "interaction": "Y"
+      "name": "5",
+      "line": "Comencemos por lo basico, aunque ya deberias haber aprendido esto en la acedemia...",
+      "interaction": "WaitForBasicInput"
+    },
+    {
+      "name": "6",
+      "line": "Cada Dios™ se encarga de un planeta, y solo le esta permitido realizar dos acciones, \"Castigar\" o  \"Recompensar\"",
+      "interaction": "WaitForBasicInput"
+    },
+    {
+      "name": "7",
+      "line": "Estas acciones tendran un efecto diferente dependiendo de los parametros y estado en el que se encuentre tu planeta",
+      "interaction": "WaitForBasicInput"
+    },
+    {
+      "name": "8",
+      "line": "Por ejemplo, ahora mismo el planeta está en las condiciones ideales para crear a los primeros humanos",
+      "interaction": "WaitForBasicInput"
+    },
+    {
+      "name": "9",
+      "line": "(Presiona el boton de \"Bendicion\")",
+      "interaction": "WaitForBasicInput"
     }
 
   ],

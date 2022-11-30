@@ -88,8 +88,12 @@ public class GameController : MonoBehaviour
     public DialogueList dialogueList = new DialogueList();
     #endregion
 
-    private InputManager inputManager;    
+    private InputManager inputManager;
     private bool screenClicked;
+    private bool blessingClicked;
+    private bool punishmentClicked;
+
+    private bool tutorial = false;
 
     public void Inteaction()
     {
@@ -126,15 +130,18 @@ public class GameController : MonoBehaviour
 
     private void TickSystemInit()
     {
-        // Nos subscribimos al evento OnTick, para ejecutar logica del juego en cada Tick
-        TimeTickSystem.OnTick += delegate(object sender, TimeTickSystem.OnTickEventArgs e)
+        if (!tutorial)
         {
-            if (e.tick % tickPerYear == 0)
+            // Nos subscribimos al evento OnTick, para ejecutar logica del juego en cada Tick
+            TimeTickSystem.OnTick += delegate(object sender, TimeTickSystem.OnTickEventArgs e)
             {
-                Debug.Log("--- TICK ---");
-                ProcessYear(1);
-            }
-        };
+                if (e.tick % tickPerYear == 0)
+                {
+                    Debug.Log("--- TICK ---");
+                    ProcessYear(1);
+                }
+            };
+        }
     }
 
     private void ProcessYear(int years)
@@ -166,82 +173,104 @@ public class GameController : MonoBehaviour
 
     private void FindDialogue(int population)
     {
-        int populationLvl = 0;
-        bool cutscene = false;
-        List<newsDialogues> avalibleDialogue = new List<newsDialogues>();
+        if (!tutorial)
+        {
+            int populationLvl = 0;
+            List<newsDialogues> avalibleDialogue = new List<newsDialogues>();
 
-        if (population == 2)
-        {
-            populationLvl = 0;
-            cutscene = true;
-        }
-        else if (population == 4)
-        {
-            populationLvl = 1;
-        }
-        else if (population > 4 && population <= 10)
-        {
-            populationLvl = 2;
-        }
-        else if (population > 10 && population <= 200)
-        {
-            populationLvl = 3;
-        }
-        else if (population > 200)
-        {
-            populationLvl = 4;
-        }
+            if (population == 2)
+            {
+                populationLvl = 0;
+            }
+            else if (population == 4)
+            {
+                populationLvl = 1;
+            }
+            else if (population > 4 && population <= 10)
+            {
+                populationLvl = 2;
+            }
+            else if (population > 10 && population <= 200)
+            {
+                populationLvl = 3;
+            }
+            else if (population > 200)
+            {
+                populationLvl = 4;
+            }
 
-        if (cutscene) {
-            StartCoroutine("WaitingForInput");
-
-            
-        } else {
-            foreach (newsDialogues newDialogue in dialogueList.newsDialogues) {
+            foreach (newsDialogues newDialogue in dialogueList.newsDialogues)
+            {
                 if (newDialogue.name.ToUpper().Equals("POPULATIONLVL" + populationLvl))
                 {
                     avalibleDialogue.Add(newDialogue);
                 }
             }
-            uiController.ShowDialogue(avalibleDialogue[(int)UnityEngine.Random.Range(0, avalibleDialogue.Count)].line);
+            uiController.ShowDialogue(
+                avalibleDialogue[(int)UnityEngine.Random.Range(0, avalibleDialogue.Count)].line
+            );
         }
-
-        
-
+        else
+        {
+            StartCoroutine("WaitingForInput");
+        }
     }
 
-    IEnumerator WaitingForInput() {
+    IEnumerator WaitingForInput()
+    {
         for (int i = 0; i < dialogueList.cutsceneDialogue.Length; i++)
         {
             var cutsceneDialogue = dialogueList.cutsceneDialogue[i];
-            if (cutsceneDialogue.interaction == "Y") 
+            if (cutsceneDialogue.interaction == "WaitForBasicInput")
             {
                 uiController.ShowDialogue(cutsceneDialogue.line);
                 yield return new WaitUntil(IsScreenClicked);
                 screenClicked = false;
             }
+            else if (cutsceneDialogue.interaction == "WaitForBlessingInput")
+            {
+                uiController.ShowDialogue(cutsceneDialogue.line);
+                yield return new WaitUntil(IsBlessingClicked);
+                screenClicked = false;
+            }
+            else if (cutsceneDialogue.interaction == "WaitForPunishmentInput")
+            {
+                uiController.ShowDialogue(cutsceneDialogue.line);
+                yield return new WaitUntil(IsPunishmentClicked);
+                screenClicked = false;
+            }
         }
     }
 
-    public void Click(Vector2 mousePos, float time) {
-        /* RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-        if (hit.collider != null) {
-            Debug.Log(hit.collider.tag);
-        } */
-
-        //globalEvents.audioManagerReadyEvent -= OnAudioReady;
+    public void Click(Vector2 mousePos, float time)
+    {
         screenClicked = true;
     }
-
 
     private bool IsScreenClicked()
     {
         return screenClicked;
     }
 
-    public void Blessing() { }
+    private bool IsBlessingClicked()
+    {
+        return screenClicked;
+    }
 
-    public void Punishment() { }
+    private bool IsPunishmentClicked()
+    {
+        return screenClicked;
+    }
+
+    public void Blessing()
+    {
+        blessingClicked = true;
+    }
+
+    public void Punishment()
+    {
+        punishmentClicked = true;
+    }
 
     public void SaveGameData()
     {
@@ -319,6 +348,7 @@ public class GameController : MonoBehaviour
      */
     public void InitializeGameData()
     {
+        tutorial = true;
         PlanetYear = 0;
         PlanetPopulation = 2;
         PlanetCoins = 0;
