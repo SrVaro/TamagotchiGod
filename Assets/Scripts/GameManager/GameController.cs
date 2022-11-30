@@ -14,6 +14,9 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private UIController uiController;
 
+    [SerializeField]
+    private GameObject cutsceneBackground;
+
     #region STATS
     private float _energy = 1;
     public float PlanetEnergy
@@ -125,7 +128,6 @@ public class GameController : MonoBehaviour
         Application.targetFrameRate = 60;
         dialogueList = jsonReader.Lines;
         //LoadGameData();
-        TickSystemInit();
     }
 
     private void TickSystemInit()
@@ -221,6 +223,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < dialogueList.cutsceneDialogue.Length; i++)
         {
             var cutsceneDialogue = dialogueList.cutsceneDialogue[i];
+            Debug.Log(cutsceneDialogue.interaction);
             if (cutsceneDialogue.interaction == "WaitForBasicInput")
             {
                 uiController.ShowDialogue(cutsceneDialogue.line);
@@ -231,15 +234,17 @@ public class GameController : MonoBehaviour
             {
                 uiController.ShowDialogue(cutsceneDialogue.line);
                 yield return new WaitUntil(IsBlessingClicked);
-                screenClicked = false;
+                blessingClicked = false;
             }
             else if (cutsceneDialogue.interaction == "WaitForPunishmentInput")
             {
                 uiController.ShowDialogue(cutsceneDialogue.line);
                 yield return new WaitUntil(IsPunishmentClicked);
-                screenClicked = false;
+                punishmentClicked = false;
             }
         }
+
+        cutsceneBackground.SetActive(false);
     }
 
     public void Click(Vector2 mousePos, float time)
@@ -254,12 +259,12 @@ public class GameController : MonoBehaviour
 
     private bool IsBlessingClicked()
     {
-        return screenClicked;
+        return blessingClicked;
     }
 
     private bool IsPunishmentClicked()
     {
-        return screenClicked;
+        return punishmentClicked;
     }
 
     public void Blessing()
@@ -349,6 +354,7 @@ public class GameController : MonoBehaviour
     public void InitializeGameData()
     {
         tutorial = true;
+        cutsceneBackground.SetActive(true);
         PlanetYear = 0;
         PlanetPopulation = 2;
         PlanetCoins = 0;

@@ -38,6 +38,11 @@
     {
       "name": "9",
       "line": "(Presiona el boton de \"Bendicion\")",
+      "interaction": "WaitForBlessingInput"
+    },
+    {
+      "name": "10",
+      "line": "Coges un poco de tierra y agua, lo mezclas bien y creas el primer humano",
       "interaction": "WaitForBasicInput"
     }
 

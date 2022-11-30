@@ -39,12 +39,12 @@ public class InputManager : Singleton<InputManager>
     }
 
     private void StartTouch(InputAction.CallbackContext context) {
-        Debug.Log("Touch started " + touchControls.Touch.TouchPosition.ReadValue<Vector2>());
+        //Debug.Log("Touch started " + touchControls.Touch.TouchPosition.ReadValue<Vector2>());
         if (OnStartTouch != null) OnStartTouch(Utils.ScreenToWorld(mainCamera, touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.startTime);
     }
 
     private void EndTouch(InputAction.CallbackContext context) {
-        Debug.Log("Touch ended " + touchControls.Touch.TouchPosition.ReadValue<Vector2>());
+        //Debug.Log("Touch ended " + touchControls.Touch.TouchPosition.ReadValue<Vector2>());
         if (OnEndTouch != null) OnEndTouch(Utils.ScreenToWorld(mainCamera, touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.time);
 
     }
