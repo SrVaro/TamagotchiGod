@@ -217,9 +217,8 @@ public class GameController : MonoBehaviour
             {
                 if (int.Parse(populationAux) == population)
                 {
-                    uiController.ShowDialogue(
-                        newDialogue.line[(int)UnityEngine.Random.Range(0, newDialogue.line.Length)]
-                    );
+                    var rndLine = newDialogue.line[(int)UnityEngine.Random.Range(0, newDialogue.line.Length)];
+                    uiController.ShowDialogue(rndLine.line);
                 }
             }
             else
@@ -231,9 +230,12 @@ public class GameController : MonoBehaviour
                     && population <= int.Parse(populationRange[1])
                 )
                 {
-                    uiController.ShowDialogue(
-                        newDialogue.line[(int)UnityEngine.Random.Range(0, newDialogue.line.Length)]
-                    );
+                    var rndLine = newDialogue.line[(int)UnityEngine.Random.Range(0, newDialogue.line.Length)];
+                    if(!rndLine.evt) {
+                        uiController.ShowDialogue(rndLine.line);
+                    } else {
+
+                    }
                 }
             }
         }
@@ -253,13 +255,13 @@ public class GameController : MonoBehaviour
             {
                 if (interaction == "WaitForBasicInput")
                 {
-                    uiController.ShowDialogue(cutsceneDialogue.line);
+                    uiController.ShowDialogue(cutsceneDialogue.line.line);
                     yield return new WaitUntil(IsScreenClicked);
                     screenClicked = false;
                 }
                 else if (interaction == "WaitForBlessingInput")
                 {
-                    uiController.ShowDialogue(cutsceneDialogue.line);
+                    uiController.ShowDialogue(cutsceneDialogue.line.line);
                     yield return new WaitUntil(IsBlessingClicked);
                     blessingClicked = false;
                     pointerAtBlessing.SetActive(false);
@@ -267,7 +269,7 @@ public class GameController : MonoBehaviour
                 }
                 else if (interaction == "WaitForPunishmentInput")
                 {
-                    uiController.ShowDialogue(cutsceneDialogue.line);
+                    uiController.ShowDialogue(cutsceneDialogue.line.line);
                     yield return new WaitUntil(IsPunishmentClicked);
                     punishmentClicked = false;
                 }

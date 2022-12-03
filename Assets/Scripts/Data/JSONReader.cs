@@ -30,14 +30,21 @@ public class DialogueList
 [System.Serializable]
 public class newsDialogues
 {
-    public string[] line;
+    public Lines[] line;
     public string name;
 }
 
 [System.Serializable]
 public class cutsceneDialogue
 {
-    public string line;
+    public Lines line;
     public string name;
     public string[] interactions;
+}
+
+[System.Serializable]
+public class Lines
+{
+    public string line;
+    public bool evt;
 }
