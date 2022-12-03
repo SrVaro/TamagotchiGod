@@ -34,10 +34,7 @@ public class UIController : MonoBehaviour
     public string yearText
     {
         get { return _yearText.text; }
-        set
-        {
-            _yearText.text = value;
-        }
+        set { _yearText.text = value; }
     }
 
     [SerializeField]
@@ -45,10 +42,7 @@ public class UIController : MonoBehaviour
     public string populationText
     {
         get { return _populationText.text; }
-        set
-        {
-            _populationText.text = "Population: " + FormatPopulation(value);
-        }
+        set { _populationText.text = "Population: " + FormatPopulation(value); }
     }
 
     [SerializeField]
@@ -56,10 +50,7 @@ public class UIController : MonoBehaviour
     public string coinsText
     {
         get { return _coinsText.text; }
-        set
-        {
-            _coinsText.text = value + "<sprite=\"coin\" name=\"coin\">";
-        }
+        set { _coinsText.text = value + "<sprite=\"coin\" name=\"coin\">"; }
     }
 
     [SerializeField]
@@ -67,6 +58,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI _loadText;
+
     [SerializeField]
     private GameObject _loadPopup;
     public string LoadPopup
@@ -75,7 +67,7 @@ public class UIController : MonoBehaviour
         set
         {
             _loadText.text = "Game Loaded \n Years Passed: " + value;
-            Debug.Log("Game Loaded \n Years Passed: " + value);
+            //Debug.Log("Game Loaded \n Years Passed: " + value);
             StartCoroutine(showPopUp());
         }
     }
@@ -85,10 +77,7 @@ public class UIController : MonoBehaviour
     public bool ShopPanel
     {
         get { return _shopPanel.activeSelf; }
-        set
-        {
-            _shopPanel.SetActive(value);
-        }
+        set { _shopPanel.SetActive(value); }
     }
 
     private TypewriterEffect typewriterEffect;
@@ -114,14 +103,18 @@ public class UIController : MonoBehaviour
             finalValue = population;
         }
 
-
         return finalValue;
     }
 
     public void ShowDialogue(string dialogueArray)
     {
-        if (textLabel.text != dialogueArray)
+        if (typewriterCoroutine == null)
         {
+            typewriterCoroutine = StartCoroutine(StepThroughDialogue(dialogueArray));
+        }
+        else if (textLabel.text != dialogueArray)
+        {
+            StopCoroutine(typewriterCoroutine);
             textLabel.text = "";
             typewriterCoroutine = StartCoroutine(StepThroughDialogue(dialogueArray));
         }
@@ -130,7 +123,6 @@ public class UIController : MonoBehaviour
     private IEnumerator StepThroughDialogue(string dialogueArray)
     {
         yield return typewriterEffect.Run(dialogueArray, textLabel);
-
     }
 
     private IEnumerator showPopUp()
@@ -144,30 +136,20 @@ public class UIController : MonoBehaviour
     public float Energy
     {
         get { return _energyMat.material.GetFloat("_Delta"); }
-        set
-        {
-            _energyMat.material.SetFloat("_Delta", value);
-        }
+        set { _energyMat.material.SetFloat("_Delta", value); }
     }
     public Image _waterMat;
     public float Water
     {
         get { return _waterMat.material.GetFloat("_Delta"); }
-        set
-        {
-            _waterMat.material.SetFloat("_Delta", value);
-        }
+        set { _waterMat.material.SetFloat("_Delta", value); }
     }
     public Image _tempMat;
     public float Temp
     {
         get { return _tempMat.material.GetFloat("_Delta"); }
-        set
-        {
-            _tempMat.material.SetFloat("_Delta", value);
-        }
+        set { _tempMat.material.SetFloat("_Delta", value); }
     }
-
 
     void Awake()
     {

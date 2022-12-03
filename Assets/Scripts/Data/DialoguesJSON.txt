@@ -3,55 +3,74 @@
     {
       "name": "2",
       "line": "Bienvenido a God Inc™! Soy Empleado resignado y te guiare durante tu primer dia de trabajo mientras aprendes todo lo necesario de tu nuevo puesto de trabajo.",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     },
     {
       "name": "3",
       "line": "Este primer planeta forma parte del Kit de Iniciacion Planetario entregado a todos los novatos",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     },
     {
       "name": "4",
       "line": "Este Kit limitado pero completo te permetira acostumbrarte a ser un buen Dios™",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     },
     {
       "name": "5",
       "line": "Comencemos por lo basico, aunque ya deberias haber aprendido esto en la acedemia...",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     },
     {
       "name": "6",
       "line": "Cada Dios™ se encarga de un planeta, y solo le esta permitido realizar dos acciones, \"Castigar\" o  \"Recompensar\"",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     },
     {
       "name": "7",
       "line": "Estas acciones tendran un efecto diferente dependiendo de los parametros y estado en el que se encuentre tu planeta",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     },
     {
       "name": "8",
       "line": "Por ejemplo, ahora mismo el planeta está en las condiciones ideales para crear a los primeros humanos",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     },
     {
       "name": "9",
       "line": "(Presiona el boton de \"Bendicion\")",
-      "interaction": "WaitForBlessingInput"
+      "interactions":  [ "CharacterRight", "PointAtBlessing", "WaitForBlessingInput" ]
     },
     {
       "name": "10",
       "line": "Coges un poco de tierra y agua, lo mezclas bien y creas el primer humano",
-      "interaction": "WaitForBasicInput"
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
+    },
+    {
+      "name": "11",
+      "line": "¡Enhorabuena, ahi esta tu primer humano!, o tu primer \"Recurso\" como lo llamamos en la central",
+      "interactions":  [ "CharacterLeft", "PointAtPopulation", "WaitForBasicInput" ]
+    },
+    {
+      "name": "11",
+      "line": "Bueno... Ahora que tienes tu primer recurso, te dejo para que sigas a tu ritmo, que es la hora del cafe, volvere a supervisarte mas adelante...",
+      "interactions":  [ "CharacterLeft", "WaitForBasicInput" ]
     }
-
   ],
   "newsDialogues": [
     {
-      "name": "populationLvl0",
-      "line": "2 ratas pelean por una manzana \n con Linkin Park de fondo"
+      "name": "population1",
+      "line": [ "Adan: Hostia, ¿cuanto campo no?", "Adan: Eooooooooo ¿¿¿soy el unico aqui???", "Adan: zzZZZZzzzZzz", "blablabla", "Eres un cabron hijo putaaaa", "* Ves a Adan irse detras de un arbol y mover la mano furiosamente *"] 
     },
+    {
+      "name": "population2",
+      "line": [ "Eva: Adan Hijo de puta ven aqui \n Adan: AaaAAAAaaAAaaa", "Gemidos y sonidos guturales", "Adan y Eva" ] 
+    },
+    {
+      "name": "population3-8",
+      "line": [ "Adan: Eramos pocos y pario la abuela \n Eva: A quien coño llamas abuela hijo de puta" ] 
+    }
+  ],
+  "borrador": [
     {
       "name": "populationLvl1",
       "line": "Adan y Eva inventan el sexo"

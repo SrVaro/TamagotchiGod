@@ -5,17 +5,19 @@ using UnityEngine;
 
 public class TimeTickSystem : MonoBehaviour
 {
-    public class OnTickEventArgs : EventArgs {
+    public class OnTickEventArgs : EventArgs
+    {
         public int tick;
     }
-    
+
     public static event EventHandler<OnTickEventArgs> OnTick;
 
     [SerializeField]
     private float tickPerSecond = 60f;
 
     private int tick;
-    private float tickTimer; 
+    private float tickTimer;
+
     void Awake()
     {
         tick = 0;
@@ -25,11 +27,13 @@ public class TimeTickSystem : MonoBehaviour
     void Update()
     {
         tickTimer += Time.deltaTime;
-        if(tickTimer >= tickPerSecond) {
+        if (tickTimer >= tickPerSecond)
+        {
             //Debug.Log("1 min");
             tickTimer -= tickPerSecond;
             tick++;
-            if (OnTick != null) OnTick(this, new OnTickEventArgs { tick = tick });
+            if (OnTick != null)
+                OnTick(this, new OnTickEventArgs { tick = tick });
         }
     }
 }

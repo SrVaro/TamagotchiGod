@@ -44,7 +44,7 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmptyColor: {r: 0.5, g: 0, b: 0, a: 0.5}
-    - _FillColor: {r: 1, g: 0.011904763, b: 0, a: 0.5}
+    - _FillColor: {r: 1, g: 0.011904763, b: 0, a: 1}
     - _NegColor: {r: 0.66, g: 0.22, b: 0, a: 1}
     - _PosColor: {r: 0.36078432, g: 0.85882354, b: 0.36078432, a: 0.88}
     - _SizeInfo: {r: 30.19, g: 2.08, b: 0, a: 0}
