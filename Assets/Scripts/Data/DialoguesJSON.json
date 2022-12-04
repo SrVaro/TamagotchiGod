@@ -1,0 +1,139 @@
+{
+  "tutorialDialogue": [
+    {
+      "name": "2",
+      "evtLine": "Bienvenido a God Inc™! Soy Empleado resignado y te guiare durante tu primer dia de trabajo mientras aprendes todo lo necesario de tu nuevo puesto de trabajo.",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "3",
+      "evtLine": "Este primer planeta forma parte del Kit de Iniciacion Planetario entregado a todos los novatos",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "4",
+      "evtLine": "Este Kit limitado pero completo te permetira acostumbrarte a ser un buen Dios™",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "5",
+      "evtLine": "Comencemos por lo basico, aunque ya deberias haber aprendido esto en la acedemia...",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "6",
+      "evtLine": "Cada Dios™ se encarga de un planeta, y solo le esta permitido realizar dos acciones, \"Castigar\" o  \"Recompensar\"",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "7",
+      "evtLine": "Estas acciones tendran un efecto diferente dependiendo de los parametros y estado en el que se encuentre tu planeta",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "8",
+      "evtLine": "Por ejemplo, ahora mismo el planeta está en las condiciones ideales para crear a los primeros humanos",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "9",
+      "evtLine": "(Presiona el boton de \"Bendicion\")",
+      "evt": false,
+      "interactions": [
+        "CharacterRight",
+        "PointAtBlessing",
+        "WaitForBlessingInput"
+      ]
+    },
+    {
+      "name": "10",
+      "evtLine": "Coges un poco de tierra y agua, lo mezclas bien y creas el primer humano",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "11",
+      "evtLine": "¡Enhorabuena, ahi esta tu primer humano!, o tu primer \"Recurso\" como lo llamamos en la central",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "PointAtPopulation",
+        "WaitForBasicInput"
+      ]
+    },
+    {
+      "name": "11",
+      "evtLine": "Bueno... Ahora que tienes tu primer recurso, te dejo para que sigas a tu ritmo, que es la hora del cafe, volvere a supervisarte mas adelante...",
+      "evt": false,
+      "interactions": [
+        "CharacterLeft",
+        "WaitForBasicInput"
+      ]
+    }
+  ],
+  "populationDialogue": [
+    {
+      "name": "1",
+      "evt": false,
+      "linePool": [
+        "Adan: Hostia, ¿cuanto campo no?",
+        "Adan: Eooooooooo ¿¿¿soy el unico aqui???",
+        "Adan: zzZZZZzzzZzz",
+        "blablabla",
+        "Eres un cabron hijo putaaaa",
+        "* Ves a Adan irse detras de un arbol y mover la mano furiosamente *"
+      ]
+    }
+  ],
+  "eventDialogue": [
+    {
+      "name": "1",
+      "evtLine": "Sientes la soledad de Adan, quizas puedas hacer algo para que no se sienta tan solo...",
+      "evt": true,
+      "interactions": [
+        "WaitForActionInput"
+      ],
+      "blessing": [
+        "Coges un costilla de Adan y a partir de ella creas a Eva, la primera humana",
+        "FeIncrement-1",
+        "PopulationIncrement-1"
+      ],
+      "punishment": [
+        "Partes por la mitad a Adan y lo clonas, ahora hay dos Adan... \n Se odian",
+        "FeDecriment-1",
+        "PopulationIncrement-1"
+      ]
+    }
+  ]
+}

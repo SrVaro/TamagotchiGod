@@ -7,28 +7,29 @@ public class JSONReader : MonoBehaviour
     [SerializeField]
     private TextAsset textJSON;
 
-    private DialogueList _lines = null;
-    public DialogueList Lines
+    private DialogueList _dialogueList = null;
+    public DialogueList dialogueList
     {
         get
         {
-            if (_lines == null)
-                _lines = JsonUtility.FromJson<DialogueList>(textJSON.text);
-            return _lines;
+            if (_dialogueList == null)
+                _dialogueList = JsonUtility.FromJson<DialogueList>(textJSON.text);
+            return _dialogueList;
         }
-        set { _lines = value; }
+        set { _dialogueList = value; }
     }
 }
 
 [System.Serializable]
 public class DialogueList
 {
-    public newsDialogues[] newsDialogues;
-    public cutsceneDialogue[] cutsceneDialogue;
+    public Dialogue[] tutorialDialogue;
+    public Dialogue[] populationDialogue;
+    public Dialogue[] eventDialogue;
 }
 
-[System.Serializable]
-public class newsDialogues
+/* [System.Serializable]
+public class noActionTexts
 {
     public Lines[] line;
     public string name;
@@ -47,4 +48,29 @@ public class Lines
 {
     public string line;
     public bool evt;
+} */
+
+[System.Serializable]
+public class Dialogue
+{
+    public string name;
+    public string[] linePool;
+
+    public bool evt;
+    public string evtLine;
+    public string[] interactions;
+    public string[] blessing;
+    public string[] punishment;
+}
+
+[System.Serializable]
+public enum Actions
+{
+    CharacterLeft,
+    WaitForBasicInput,
+    CharacterRight,
+    PointAtBlessing,
+    WaitForBlessingInput,
+    PointAtPopulation,
+    FeIncrement
 }

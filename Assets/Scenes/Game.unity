@@ -7804,7 +7804,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 440.99988, y: 791.99994}
+  m_AnchoredPosition: {x: 342, y: 557.27}
   m_SizeDelta: {x: 412, y: 306}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1525253765
@@ -10916,6 +10916,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameController
       objectReference: {fileID: 0}
+    - target: {fileID: 111826643938717478, guid: 603a516cbad7d2f4b9264336fe833033, type: 3}
+      propertyPath: textJSON
+      value: 
+      objectReference: {fileID: 4900000, guid: c0db00f4bcdd741408bf37823c825432, type: 3}
     - target: {fileID: 111826643938717479, guid: 603a516cbad7d2f4b9264336fe833033, type: 3}
       propertyPath: tickPerSecond
       value: 0.5

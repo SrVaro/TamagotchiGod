@@ -122,7 +122,7 @@ public class GameController : MonoBehaviour
     private bool screenClicked;
     private bool blessingClicked;
     private bool punishmentClicked;
-    private bool tutorial = false;
+    private bool paused = false;
 
     private int growRate = 1;
 
@@ -131,15 +131,16 @@ public class GameController : MonoBehaviour
         if (uiController.PlanetEvent)
         {
             uiController.PlanetEvent = false;
-            PlanetEnergy += 0.1f;
-            PlanetWater += 0.1f;
-            PlanetTemp += 0.1f;
+            //PlanetEnergy += 0.1f;
+            //PlanetWater += 0.1f;
+            //PlanetTemp += 0.1f;
             PlanetCoins += 5;
 
-            if (growRate == 1)
+            FindDialogue(dialogueList.eventDialogue, true);
+            /* if (growRate == 1)
                 PlanetPopulation += 1;
             else
-                PlanetPopulation += UnityEngine.Random.Range(0, growRate);
+                PlanetPopulation += UnityEngine.Random.Range(0, growRate); */
         }
     }
 
@@ -159,7 +160,7 @@ public class GameController : MonoBehaviour
     {
         inputManager = InputManager.Instance;
         Application.targetFrameRate = 60;
-        dialogueList = jsonReader.Lines;
+        dialogueList = jsonReader.dialogueList;
         //LoadGameData();
         TickSystemInit();
     }
@@ -169,7 +170,7 @@ public class GameController : MonoBehaviour
         // Nos subscribimos al evento OnTick, para ejecutar logica del juego en cada Tick
         TimeTickSystem.OnTick += delegate(object sender, TimeTickSystem.OnTickEventArgs e)
         {
-            if (!tutorial)
+            if (!paused)
             {
                 this.LogLog("--- TICK --- " + e.tick % tickPerYear);
 
@@ -203,65 +204,106 @@ public class GameController : MonoBehaviour
             }
         }
 
-        FindDialogue(PlanetPopulation);
+        FindDialogue(dialogueList.populationDialogue, false);
 
         SaveGameData();
     }
 
-    private void FindDialogue(int population)
+    private void FindDialogue(Dialogue[] dialogues, bool evt)
     {
-        foreach (newsDialogues newDialogue in dialogueList.newsDialogues)
-        {
-            string populationAux = newDialogue.name.Substring(10);
-            if (populationAux.Length <= 2)
-            {
-                if (int.Parse(populationAux) == population)
-                {
-                    var rndLine = newDialogue.line[(int)UnityEngine.Random.Range(0, newDialogue.line.Length)];
-                    uiController.ShowDialogue(rndLine.line);
-                }
-            }
-            else
-            {
-                string[] populationRange = populationAux.Split("-");
-                this.LogLog("Population Range: " + populationRange[0] + ", " + populationRange[1]);
-                if (
-                    population >= int.Parse(populationRange[0])
-                    && population <= int.Parse(populationRange[1])
-                )
-                {
-                    var rndLine = newDialogue.line[(int)UnityEngine.Random.Range(0, newDialogue.line.Length)];
-                    if(!rndLine.evt) {
-                        uiController.ShowDialogue(rndLine.line);
-                    } else {
+        int population = PlanetPopulation;
 
+        if (!evt)
+        {
+            foreach (Dialogue dialogue in dialogues)
+            {
+                if (!dialogue.name.Contains('-'))
+                {
+                    var rndLine = dialogue.linePool[
+                        (int)UnityEngine.Random.Range(0, dialogue.linePool.Length)
+                    ];
+
+                    uiController.ShowDialogue(rndLine);
+                }
+                else
+                {
+                    string[] populationRange = dialogue.name.Split("-");
+                    if (
+                        population >= int.Parse(populationRange[0])
+                        && population <= int.Parse(populationRange[1])
+                    )
+                    {
+                        this.LogLog(
+                            "Population Range: " + populationRange[0] + ", " + populationRange[1]
+                        );
+
+                        var rndLine = dialogue.linePool[
+                            (int)UnityEngine.Random.Range(0, dialogue.linePool.Length)
+                        ];
+
+                        uiController.ShowDialogue(rndLine);
                     }
                 }
             }
         }
+        else
+        {
+            Dialogue randomEvent = dialogues[(int)UnityEngine.Random.Range(0, dialogues.Length)];
+            Dialogue[] auxDialogueList = new Dialogue[1];
+            auxDialogueList[0] = randomEvent;
+            StartCoroutine("RunEventDialogue", auxDialogueList);
+        }
     }
 
-    IEnumerator WaitingForInput()
+    IEnumerator RunEventDialogue(Dialogue[] eventDialogues)
     {
+        paused = true;
         screenClicked = false;
         blessingClicked = false;
         punishmentClicked = false;
 
-        for (int i = 0; i < dialogueList.cutsceneDialogue.Length; i++)
+        for (int i = 0; i < eventDialogues.Length; i++)
         {
-            var cutsceneDialogue = dialogueList.cutsceneDialogue[i];
+            var eventElement = eventDialogues[i];
 
-            foreach (var interaction in cutsceneDialogue.interactions)
+            foreach (var interaction in eventElement.interactions)
             {
                 if (interaction == "WaitForBasicInput")
                 {
-                    uiController.ShowDialogue(cutsceneDialogue.line.line);
+                    uiController.ShowDialogue(eventElement.evtLine);
                     yield return new WaitUntil(IsScreenClicked);
                     screenClicked = false;
                 }
+                else if (interaction == "WaitForActionInput")
+                {
+                    uiController.ShowDialogue(eventElement.evtLine);
+                    yield return new WaitUntil(IsActionClicked);
+                    if (blessingClicked)
+                    {
+                        blessingClicked = false;
+                        uiController.ShowDialogue(eventElement.blessing[0]);
+                        yield return new WaitUntil(IsScreenClicked);
+                        screenClicked = false;
+                        for (int j = 1; j < eventElement.blessing.Length; j++)
+                        {
+                            Actions(eventElement.blessing[j]);
+                        }
+                    }
+                    else if (punishmentClicked)
+                    {
+                        punishmentClicked = false;
+                        uiController.ShowDialogue(eventElement.punishment[0]);
+                        yield return new WaitUntil(IsScreenClicked);
+                        screenClicked = false;
+                        for (int j = 1; j < eventElement.punishment.Length; j++)
+                        {
+                            Actions(eventElement.punishment[j]);
+                        }
+                    }
+                }
                 else if (interaction == "WaitForBlessingInput")
                 {
-                    uiController.ShowDialogue(cutsceneDialogue.line.line);
+                    uiController.ShowDialogue(eventElement.evtLine);
                     yield return new WaitUntil(IsBlessingClicked);
                     blessingClicked = false;
                     pointerAtBlessing.SetActive(false);
@@ -269,7 +311,7 @@ public class GameController : MonoBehaviour
                 }
                 else if (interaction == "WaitForPunishmentInput")
                 {
-                    uiController.ShowDialogue(cutsceneDialogue.line.line);
+                    uiController.ShowDialogue(eventElement.evtLine);
                     yield return new WaitUntil(IsPunishmentClicked);
                     punishmentClicked = false;
                 }
@@ -297,7 +339,27 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+
+        paused = false;
         endTutorial();
+    }
+
+    public void Actions(string action)
+    {
+        Debug.Log(action);
+        string[] aux = action.Split('-');
+        if (aux[0] == "FeIncrement")
+        {
+            PlanetEnergy += int.Parse(aux[1]);
+        }
+        else if (aux[0] == "FeDecriment")
+        {
+            PlanetEnergy -= int.Parse(aux[1]);
+        }
+        else if (aux[0] == "PopulationIncrement")
+        {
+            PlanetPopulation += int.Parse(aux[1]);
+        }
     }
 
     public void Click(Vector2 mousePos, float time)
@@ -318,6 +380,11 @@ public class GameController : MonoBehaviour
     private bool IsPunishmentClicked()
     {
         return punishmentClicked;
+    }
+
+    private bool IsActionClicked()
+    {
+        return blessingClicked || punishmentClicked;
     }
 
     public void Blessing()
@@ -366,7 +433,7 @@ public class GameController : MonoBehaviour
     {
         this.LogLog("--- LOAD ---");
         // Si no existe el archivo se crea uno nuevo y se inicializan las estadisticas (Primera vez que se inicia el juego)
-        dialogueList = jsonReader.Lines;
+        dialogueList = jsonReader.dialogueList;
 
         if (File.Exists(Application.persistentDataPath + "/gameDataContainer.dat"))
         {
@@ -429,14 +496,14 @@ public class GameController : MonoBehaviour
 
     void startTutorial()
     {
-        tutorial = true;
+        paused = true;
         cutsceneBackground.SetActive(true);
-        StartCoroutine("WaitingForInput");
+        StartCoroutine("RunEventDialogue", dialogueList.tutorialDialogue);
     }
 
     void endTutorial()
     {
-        tutorial = false;
+        paused = false;
         characterLeft.SetActive(false);
         characterRight.SetActive(false);
         pointerAtBlessing.SetActive(false);
