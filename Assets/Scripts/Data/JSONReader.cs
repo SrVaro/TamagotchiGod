@@ -26,6 +26,7 @@ public class DialogueList
     public Dialogue[] tutorialDialogue;
     public Dialogue[] populationDialogue;
     public Dialogue[] eventDialogue;
+    
 }
 
 /* [System.Serializable]

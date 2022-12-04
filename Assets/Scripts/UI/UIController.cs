@@ -50,7 +50,15 @@ public class UIController : MonoBehaviour
     public string coinsText
     {
         get { return _coinsText.text; }
-        set { _coinsText.text = value + "<sprite=\"coin\" name=\"coin\">"; }
+        set { _coinsText.text = value + " <sprite=0>"; }
+    }
+
+    [SerializeField]
+    private TextMeshProUGUI _faithText;
+    public string faithText
+    {
+        get { return _faithText.text; }
+        set { _faithText.text = value + " <sprite=2>"; }
     }
 
     [SerializeField]

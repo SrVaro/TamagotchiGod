@@ -53,14 +53,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float _temp = 1;
-    public float PlanetTemp
+    private float _faith = 1;
+    public float PlanetFaith
     {
-        get { return _temp; }
+        get { return _faith; }
         set
         {
-            _temp = Mathf.Clamp(value, 0, 1);
-            uiController.Temp = _temp;
+            _faith = value;
+            uiController.faithText = PlanetFaith.ToString();
         }
     }
 
@@ -125,6 +125,8 @@ public class GameController : MonoBehaviour
     private bool paused = false;
 
     private int growRate = 1;
+
+    private float cooldownTime = 0;
 
     public void Interaction()
     {
@@ -193,12 +195,12 @@ public class GameController : MonoBehaviour
             {
                 //PlanetEnergy -= 0.01f;
                 PlanetWater -= 0.01f;
-                PlanetTemp -= 0.01f;
+                //PlanetFe -= 0.01f;
 
-                if (PlanetEnergy > 0.25f && PlanetWater > 0.25f && PlanetTemp > 0.25f)
-                {
-                    PlanetPopulation += UnityEngine.Random.Range(0, PlanetPopulation);
-                }
+                //if (PlanetEnergy > 0.25f && PlanetWater > 0.25f && PlanetFe > 0.25f)
+                //{
+                //    PlanetPopulation += UnityEngine.Random.Range(0, PlanetPopulation);
+                //}
 
                 uiController.PlanetEvent = true;
             }
@@ -350,11 +352,11 @@ public class GameController : MonoBehaviour
         string[] aux = action.Split('-');
         if (aux[0] == "FeIncrement")
         {
-            PlanetEnergy += int.Parse(aux[1]);
+            PlanetFaith += int.Parse(aux[1]);
         }
         else if (aux[0] == "FeDecriment")
         {
-            PlanetEnergy -= int.Parse(aux[1]);
+            PlanetFaith -= int.Parse(aux[1]);
         }
         else if (aux[0] == "PopulationIncrement")
         {
@@ -364,7 +366,12 @@ public class GameController : MonoBehaviour
 
     public void Click(Vector2 mousePos, float time)
     {
-        screenClicked = true;
+        if(time > cooldownTime) {
+            screenClicked = true;
+            cooldownTime = time + 3;
+        }
+        
+            
     }
 
     private bool IsScreenClicked()
@@ -392,7 +399,7 @@ public class GameController : MonoBehaviour
         if ((PlanetEnergy -= 0.25f) >= 0)
         {
             blessingClicked = true;
-            PlanetEnergy -= 0.25f;
+            //PlanetEnergy -= 0.25f;
         }
     }
 
@@ -401,7 +408,7 @@ public class GameController : MonoBehaviour
         if ((PlanetEnergy -= 0.25f) >= 0)
         {
             punishmentClicked = true;
-            PlanetEnergy -= 0.25f;
+            //PlanetEnergy -= 0.25f;
         }
     }
 
@@ -422,7 +429,7 @@ public class GameController : MonoBehaviour
         gd.year = PlanetYear;
         gd.food = PlanetEnergy;
         gd.water = PlanetWater;
-        gd.temp = PlanetTemp;
+        gd.temp = PlanetFaith;
         gd.population = PlanetPopulation;
 
         bf.Serialize(file, gd);
@@ -450,7 +457,7 @@ public class GameController : MonoBehaviour
             PlanetYear = gd.year;
             PlanetEnergy = gd.food;
             PlanetWater = gd.water;
-            PlanetTemp = gd.temp;
+            PlanetFaith = gd.temp;
             PlanetPopulation = gd.population;
 
             // Se convierte del tiempo que se ha recuperado del fichero a ticks del juego que han transcurrido desde esa fecha hasta ahora
@@ -486,8 +493,8 @@ public class GameController : MonoBehaviour
         PlanetCoins = 0;
 
         PlanetEnergy = 1;
-        PlanetWater = 1;
-        PlanetTemp = 1;
+        PlanetWater = 0;
+        PlanetFaith = 0;
         //ProcessYear(0);
         SaveGameData();
 
