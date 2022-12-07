@@ -75,7 +75,7 @@ public class UIController : MonoBehaviour
         set
         {
             _loadText.text = "Game Loaded \n Years Passed: " + value;
-            //Debug.Log("Game Loaded \n Years Passed: " + value);
+            ////Debug.Log("Game Loaded \n Years Passed: " + value);
             StartCoroutine(showPopUp());
         }
     }
@@ -116,20 +116,13 @@ public class UIController : MonoBehaviour
 
     public void ShowDialogue(string dialogueArray)
     {
-        if (typewriterCoroutine == null)
-        {
-            typewriterCoroutine = StartCoroutine(StepThroughDialogue(dialogueArray));
-        }
-        else if (textLabel.text != dialogueArray)
-        {
-            StopCoroutine(typewriterCoroutine);
-            textLabel.text = "";
-            typewriterCoroutine = StartCoroutine(StepThroughDialogue(dialogueArray));
-        }
+        textLabel.text = "";
+        typewriterCoroutine = StartCoroutine(StepThroughDialogue(dialogueArray));
     }
 
     private IEnumerator StepThroughDialogue(string dialogueArray)
     {
+        //Debug.Log("Corutina empezada para el texto: " + dialogueArray);
         yield return typewriterEffect.Run(dialogueArray, textLabel);
     }
 

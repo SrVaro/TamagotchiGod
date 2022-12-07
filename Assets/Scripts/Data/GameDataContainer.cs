@@ -1,7 +1,7 @@
-
 using System;
+using System.Collections.Generic;
 
-[Serializable] 
+[Serializable]
 public class GameDataContainer
 {
     public DateTime savedTime;
@@ -10,4 +10,5 @@ public class GameDataContainer
     public float water;
     public float temp;
     public int population;
+    public Dictionary<string, bool> dialogueVariables = new Dictionary<string, bool>();
 }

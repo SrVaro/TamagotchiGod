@@ -107,18 +107,17 @@
       "name": "1",
       "evt": false,
       "linePool": [
-        "Adan: Hostia, ¿cuanto campo no?",
+        "Adan: Macho, tenia que ser el primero en esto, vaya aburrimiento",
         "Adan: Eooooooooo ¿¿¿soy el unico aqui???",
-        "Adan: zzZZZZzzzZzz",
-        "blablabla",
-        "Eres un cabron hijo putaaaa",
+        "Adan: zzZZZZzzzZzzzZZzZzz",
+        "Adan: Eres un cabrón hijo puta \n un mamón y un pedorretas hijo puta \n Tu eres un capullo y un cabrón \n te jodes por ser tan mamón",
         "* Ves a Adan irse detras de un arbol y mover la mano furiosamente *"
       ]
     }
   ],
   "eventDialogue": [
     {
-      "name": "1",
+      "name": "newLover",
       "evtLine": "Sientes la soledad de Adan, quizas puedas hacer algo para que no se sienta tan solo...",
       "evt": true,
       "interactions": [

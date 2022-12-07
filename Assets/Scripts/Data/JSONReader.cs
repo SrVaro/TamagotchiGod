@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +8,9 @@ public class JSONReader : MonoBehaviour
 {
     [SerializeField]
     private TextAsset textJSON;
+
+    [SerializeField]
+    private TextAsset eventVariablesJSON;
 
     private DialogueList _dialogueList = null;
     public DialogueList dialogueList
@@ -18,15 +23,27 @@ public class JSONReader : MonoBehaviour
         }
         set { _dialogueList = value; }
     }
+    private Dictionary<string, bool> _eventVariables = null;
+    public Dictionary<string, bool> eventVariables
+    {
+        get
+        {
+            if (_eventVariables == null)
+                _eventVariables = JsonConvert.DeserializeObject<Dictionary<string, bool>>(
+                    eventVariablesJSON.text
+                );
+            return _eventVariables;
+        }
+        set { _eventVariables = value; }
+    }
 }
 
 [System.Serializable]
 public class DialogueList
 {
-    public Dialogue[] tutorialDialogue;
-    public Dialogue[] populationDialogue;
-    public Dialogue[] eventDialogue;
-    
+    public List<Dialogue> tutorialDialogue;
+    public List<Dialogue> populationDialogue;
+    public List<Dialogue> eventDialogue;
 }
 
 /* [System.Serializable]
@@ -62,16 +79,4 @@ public class Dialogue
     public string[] interactions;
     public string[] blessing;
     public string[] punishment;
-}
-
-[System.Serializable]
-public enum Actions
-{
-    CharacterLeft,
-    WaitForBasicInput,
-    CharacterRight,
-    PointAtBlessing,
-    WaitForBlessingInput,
-    PointAtPopulation,
-    FeIncrement
 }

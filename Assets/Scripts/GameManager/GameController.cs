@@ -114,7 +114,9 @@ public class GameController : MonoBehaviour
     #region JSON DATA
     [SerializeField]
     private JSONReader jsonReader;
+
     public DialogueList dialogueList = new DialogueList();
+    private Dictionary<string, bool> eventVariables = new Dictionary<string, bool>();
     #endregion
 
     private InputManager inputManager;
@@ -126,7 +128,10 @@ public class GameController : MonoBehaviour
 
     private int growRate = 1;
 
-    private float cooldownTime = 0;
+    //private float cooldownTime = 0;
+
+    //[SerializeField]
+    //private float clickCooldown = 3;
 
     public void Interaction()
     {
@@ -138,11 +143,21 @@ public class GameController : MonoBehaviour
             //PlanetTemp += 0.1f;
             PlanetCoins += 5;
 
+            List<Dialogue> avalibleDialogues = new List<Dialogue>();
+            foreach (var eventDialogue in dialogueList.eventDialogue)
+            {
+                if (eventVariables[eventDialogue.name])
+                {
+                    avalibleDialogues.Add(eventDialogue);
+                }
+            }
             FindDialogue(dialogueList.eventDialogue, true);
-            /* if (growRate == 1)
+            /*
+            if (growRate == 1)
                 PlanetPopulation += 1;
             else
-                PlanetPopulation += UnityEngine.Random.Range(0, growRate); */
+                PlanetPopulation += UnityEngine.Random.Range(0, growRate);
+            */
         }
     }
 
@@ -174,11 +189,11 @@ public class GameController : MonoBehaviour
         {
             if (!paused)
             {
-                this.LogLog("--- TICK --- " + e.tick % tickPerYear);
+                //this.LogLog("--- TICK --- " + e.tick % tickPerYear);
 
                 if ((e.tick % tickPerYear) == 0)
                 {
-                    this.LogLog("--- YEAR ---");
+                    //this.LogLog("--- YEAR ---");
                     ProcessYear(1);
                 }
             }
@@ -187,7 +202,7 @@ public class GameController : MonoBehaviour
 
     private void ProcessYear(int years)
     {
-        this.LogLog("Years passed: " + years);
+        //this.LogLog("Years passed: " + years);
         for (int i = 0; i < years; i++)
         {
             PlanetYear++;
@@ -211,7 +226,7 @@ public class GameController : MonoBehaviour
         SaveGameData();
     }
 
-    private void FindDialogue(Dialogue[] dialogues, bool evt)
+    private void FindDialogue(List<Dialogue> dialogues, bool evt)
     {
         int population = PlanetPopulation;
 
@@ -235,9 +250,9 @@ public class GameController : MonoBehaviour
                         && population <= int.Parse(populationRange[1])
                     )
                     {
-                        this.LogLog(
-                            "Population Range: " + populationRange[0] + ", " + populationRange[1]
-                        );
+                        //this.LogLog(
+                        //    "Population Range: " + populationRange[0] + ", " + populationRange[1]
+                        //);
 
                         var rndLine = dialogue.linePool[
                             (int)UnityEngine.Random.Range(0, dialogue.linePool.Length)
@@ -250,23 +265,33 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Dialogue randomEvent = dialogues[(int)UnityEngine.Random.Range(0, dialogues.Length)];
-            Dialogue[] auxDialogueList = new Dialogue[1];
-            auxDialogueList[0] = randomEvent;
+            Dialogue randomEvent = dialogues[(int)UnityEngine.Random.Range(0, dialogues.Count)];
+            List<Dialogue> auxDialogueList = new List<Dialogue>();
+            for (int i = 0; i < dialogueList.eventDialogue.Count; i++)
+            {
+                if (randomEvent.name == dialogueList.eventDialogue[i].name)
+                {
+                    dialogueList.eventDialogue.RemoveAt(i);
+                }
+            }
+            auxDialogueList.Add(randomEvent);
             StartCoroutine("RunEventDialogue", auxDialogueList);
         }
     }
 
-    IEnumerator RunEventDialogue(Dialogue[] eventDialogues)
+    IEnumerator RunEventDialogue(List<Dialogue> eventDialogues)
     {
         paused = true;
+        //bless
         screenClicked = false;
         blessingClicked = false;
         punishmentClicked = false;
 
-        for (int i = 0; i < eventDialogues.Length; i++)
+        for (int i = 0; i < eventDialogues.Count; i++)
         {
             var eventElement = eventDialogues[i];
+
+            //Debug.Log("Line actual: " + eventElement.evtLine);
 
             foreach (var interaction in eventElement.interactions)
             {
@@ -348,7 +373,7 @@ public class GameController : MonoBehaviour
 
     public void Actions(string action)
     {
-        Debug.Log(action);
+        //Debug.Log(action);
         string[] aux = action.Split('-');
         if (aux[0] == "FeIncrement")
         {
@@ -366,12 +391,11 @@ public class GameController : MonoBehaviour
 
     public void Click(Vector2 mousePos, float time)
     {
-        if(time > cooldownTime) {
-            screenClicked = true;
-            cooldownTime = time + 3;
-        }
-        
-            
+        //if (time > cooldownTime)
+        //{
+        screenClicked = true;
+        //cooldownTime = time + clickCooldown;
+        //}
     }
 
     private bool IsScreenClicked()
@@ -396,26 +420,26 @@ public class GameController : MonoBehaviour
 
     public void Blessing()
     {
-        if ((PlanetEnergy -= 0.25f) >= 0)
-        {
-            blessingClicked = true;
-            //PlanetEnergy -= 0.25f;
-        }
+        //if ((PlanetEnergy -= 0.25f) >= 0)
+        //{
+        blessingClicked = true;
+        //PlanetEnergy -= 0.25f;
+        //}
     }
 
     public void Punishment()
     {
-        if ((PlanetEnergy -= 0.25f) >= 0)
-        {
-            punishmentClicked = true;
-            //PlanetEnergy -= 0.25f;
-        }
+        //if ((PlanetEnergy -= 0.25f) >= 0)
+        //{
+        punishmentClicked = true;
+        //PlanetEnergy -= 0.25f;
+        //}
     }
 
     public void SaveGameData()
     {
-        this.LogLog("--- SAVE ---");
-        //this.LogLog("Archivo creado en " + Application.persistentDataPath + "/gameDataContainer.dat");
+        //this.LogLog("--- SAVE ---");
+        ////this.LogLog("Archivo creado en " + Application.persistentDataPath + "/gameDataContainer.dat");
         // Se crea/sustituye el archivo del sistema (Windows/Android/IOs/Etc...)
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(
@@ -431,14 +455,15 @@ public class GameController : MonoBehaviour
         gd.water = PlanetWater;
         gd.temp = PlanetFaith;
         gd.population = PlanetPopulation;
-
+        gd.dialogueVariables = eventVariables;
+        Debug.Log("EventVariables: " + eventVariables["newLover"]);
         bf.Serialize(file, gd);
         file.Close();
     }
 
     public void LoadGameData()
     {
-        this.LogLog("--- LOAD ---");
+        //this.LogLog("--- LOAD ---");
         // Si no existe el archivo se crea uno nuevo y se inicializan las estadisticas (Primera vez que se inicia el juego)
         dialogueList = jsonReader.dialogueList;
 
@@ -459,11 +484,12 @@ public class GameController : MonoBehaviour
             PlanetWater = gd.water;
             PlanetFaith = gd.temp;
             PlanetPopulation = gd.population;
+            eventVariables = gd.dialogueVariables;
 
             // Se convierte del tiempo que se ha recuperado del fichero a ticks del juego que han transcurrido desde esa fecha hasta ahora
-            this.LogLog(
-                "Ticks passed: " + ((int)(DateTime.Now - savedTime).TotalSeconds / tickPerYear)
-            );
+            //this.LogLog(
+            //     "Ticks passed: " + ((int)(DateTime.Now - savedTime).TotalSeconds / tickPerYear)
+            //);
             uiController.LoadPopup = (
                 (int)(DateTime.Now - savedTime).TotalSeconds / tickPerYear
             ).ToString();
@@ -472,12 +498,12 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            this.LogLog("--- FAILED LOAD ---");
-            this.LogLog(
-                "No existe el archivo en "
-                    + Application.persistentDataPath
-                    + "/gameDataContainer.dat"
-            );
+            //this.LogLog("--- FAILED LOAD ---");
+            //this.LogLog(
+            //    "No existe el archivo en "
+            //        + Application.persistentDataPath
+            //       + "/gameDataContainer.dat"
+            //);
             InitializeGameData();
         }
     }
@@ -495,6 +521,9 @@ public class GameController : MonoBehaviour
         PlanetEnergy = 1;
         PlanetWater = 0;
         PlanetFaith = 0;
+        uiController.PlanetEvent = false;
+        eventVariables = jsonReader.eventVariables;
+
         //ProcessYear(0);
         SaveGameData();
 
@@ -522,12 +551,12 @@ public class GameController : MonoBehaviour
     {
         if (hasFocus)
         {
-            this.LogLog("App Status: Has focus");
+            //this.LogLog("App Status: Has focus");
             LoadGameData();
         }
         else
         {
-            this.LogLog("App Status: Lost focus");
+            //this.LogLog("App Status: Lost focus");
             SaveGameData();
         }
     }
@@ -539,25 +568,25 @@ public class GameController : MonoBehaviour
     {
         if (pauseStatus)
         {
-            this.LogLog("App Status: Paused");
+            //this.LogLog("App Status: Paused");
             SaveGameData();
         }
         else
         {
-            //this.LogLog("Resumed");
+            ////this.LogLog("Resumed");
             //LoadGameData();
         }
     }
 
     void OnApplicationQuit()
     {
-        this.LogLog("App Status: Closed");
+        //this.LogLog("App Status: Closed");
         SaveGameData();
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        this.LogLog("App Status: Opened");
+        //this.LogLog("App Status: Opened");
         LoadGameData();
     }
 }
