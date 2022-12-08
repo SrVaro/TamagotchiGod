@@ -64,6 +64,39 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private float _culture = 1;
+    public float PlanetCulture
+    {
+        get { return _faith; }
+        set
+        {
+            _culture = value;
+            uiController.cultureText = PlanetCulture.ToString();
+        }
+    }
+
+    private float _souls = 1;
+    public float PlanetSouls
+    {
+        get { return _souls; }
+        set
+        {
+            _souls = value;
+            uiController.soulText = PlanetSouls.ToString();
+        }
+    }
+
+    private float _science = 1;
+    public float PlanetScience
+    {
+        get { return _science; }
+        set
+        {
+            _science = value;
+            uiController.scienceText = PlanetScience.ToString();
+        }
+    }
+
     private int _year;
     public int PlanetYear
     {
@@ -151,7 +184,7 @@ public class GameController : MonoBehaviour
                     avalibleDialogues.Add(eventDialogue);
                 }
             }
-            FindDialogue(dialogueList.eventDialogue, true);
+            FindDialogue(avalibleDialogues, true);
             /*
             if (growRate == 1)
                 PlanetPopulation += 1;
@@ -221,7 +254,17 @@ public class GameController : MonoBehaviour
             }
         }
 
-        FindDialogue(dialogueList.populationDialogue, false);
+        List<Dialogue> avalibleDialogues = new List<Dialogue>();
+        foreach (var populationDialogue in dialogueList.populationDialogue)
+        {
+            if (eventVariables[populationDialogue.name])
+            {
+                avalibleDialogues.Add(populationDialogue);
+                Debug.Log("Population dialogue " + populationDialogue.name);
+            }
+        }
+
+        FindDialogue(avalibleDialogues, false);
 
         SaveGameData();
     }
@@ -271,6 +314,7 @@ public class GameController : MonoBehaviour
             {
                 if (randomEvent.name == dialogueList.eventDialogue[i].name)
                 {
+                    eventVariables[dialogueList.eventDialogue[i].name] = false;
                     dialogueList.eventDialogue.RemoveAt(i);
                 }
             }
@@ -373,7 +417,7 @@ public class GameController : MonoBehaviour
 
     public void Actions(string action)
     {
-        //Debug.Log(action);
+        Debug.Log(action);
         string[] aux = action.Split('-');
         if (aux[0] == "FeIncrement")
         {
@@ -386,6 +430,24 @@ public class GameController : MonoBehaviour
         else if (aux[0] == "PopulationIncrement")
         {
             PlanetPopulation += int.Parse(aux[1]);
+        }else if (aux[0] == "PopulationDecriment")
+        {
+            PlanetPopulation -= int.Parse(aux[1]);
+        }else if (aux[0] == "CultureIncrement")
+        {
+            PlanetCulture += int.Parse(aux[1]);
+        }else if (aux[0] == "CultureDecriment")
+        {
+            PlanetCulture -= int.Parse(aux[1]);
+        }else if (aux[0] == "ScienceIncrement")
+        {
+            PlanetScience += int.Parse(aux[1]);
+        }else if (aux[0] == "ScienceDecriment")
+        {
+            PlanetScience -= int.Parse(aux[1]);
+        } else if(aux[0] == "unlock") {
+            Debug.Log("unlock: " + eventVariables[aux[1]]);
+            eventVariables[aux[1]] = true;
         }
     }
 
@@ -451,12 +513,15 @@ public class GameController : MonoBehaviour
         // Se guardan las variables en el archivo
         gd.savedTime = DateTime.Now;
         gd.year = PlanetYear;
-        gd.food = PlanetEnergy;
+        gd.energy = PlanetEnergy;
         gd.water = PlanetWater;
-        gd.temp = PlanetFaith;
+        gd.faith = PlanetFaith;
+        gd.culture = PlanetCulture;
+        gd.science = PlanetScience;
+        gd.souls = PlanetSouls;
+
         gd.population = PlanetPopulation;
         gd.dialogueVariables = eventVariables;
-        Debug.Log("EventVariables: " + eventVariables["newLover"]);
         bf.Serialize(file, gd);
         file.Close();
     }
@@ -480,9 +545,12 @@ public class GameController : MonoBehaviour
             // Se cargan los datos del fichero en las variables del juego
             DateTime savedTime = gd.savedTime;
             PlanetYear = gd.year;
-            PlanetEnergy = gd.food;
+            PlanetEnergy = gd.energy;
             PlanetWater = gd.water;
-            PlanetFaith = gd.temp;
+            PlanetFaith = gd.faith;
+            PlanetCulture = gd.culture;
+            PlanetScience = gd.science = PlanetScience;
+            PlanetSouls = gd.souls;
             PlanetPopulation = gd.population;
             eventVariables = gd.dialogueVariables;
 
@@ -518,9 +586,12 @@ public class GameController : MonoBehaviour
         PlanetPopulation = 0;
         PlanetCoins = 0;
 
-        PlanetEnergy = 1;
+        PlanetEnergy = 0;
         PlanetWater = 0;
         PlanetFaith = 0;
+        PlanetCulture = 0;
+        PlanetScience = 0;
+        PlanetSouls = 0;
         uiController.PlanetEvent = false;
         eventVariables = jsonReader.eventVariables;
 

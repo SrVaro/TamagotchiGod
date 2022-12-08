@@ -62,6 +62,30 @@ public class UIController : MonoBehaviour
     }
 
     [SerializeField]
+    private TextMeshProUGUI _cultureText;
+    public string cultureText
+    {
+        get { return _cultureText.text; }
+        set { _cultureText.text = value + " <sprite=4>"; }
+    }
+
+  [SerializeField]
+    private TextMeshProUGUI _scienceText;
+    public string scienceText
+    {
+        get { return _scienceText.text; }
+        set { _scienceText.text = value + " <sprite=3>"; }
+    }
+
+    [SerializeField]
+    private TextMeshProUGUI _soulText;
+    public string soulText
+    {
+        get { return _soulText.text; }
+        set { _soulText.text = value + " <sprite=1>"; }
+    }
+
+    [SerializeField]
     private TextMeshProUGUI textLabel;
 
     [SerializeField]

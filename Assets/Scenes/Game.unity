@@ -2878,6 +2878,9 @@ MonoBehaviour:
   _populationText: {fileID: 755173902}
   _coinsText: {fileID: 945753721}
   _faithText: {fileID: 1233034613}
+  _cultureText: {fileID: 1224828766}
+  _scienceText: {fileID: 1887952488}
+  _soulText: {fileID: 359008248}
   textLabel: {fileID: 802195901}
   _loadText: {fileID: 1121967581}
   _loadPopup: {fileID: 499944028}
@@ -6560,7 +6563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1220959250
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11511,7 +11514,7 @@ PrefabInstance:
       objectReference: {fileID: 4900000, guid: 3df5bca7f28e97b498b5261708536c28, type: 3}
     - target: {fileID: 111826643938717479, guid: 603a516cbad7d2f4b9264336fe833033, type: 3}
       propertyPath: tickPerSecond
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 603a516cbad7d2f4b9264336fe833033, type: 3}
@@ -11855,6 +11858,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7216300664491760756, guid: 74d50294ae94455449cb4897a635f834, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7216300665677606980, guid: 74d50294ae94455449cb4897a635f834, type: 3}
       propertyPath: m_Name
       value: Planet
@@ -11907,5 +11914,9 @@ PrefabInstance:
       propertyPath: gameController
       value: 
       objectReference: {fileID: 1528684234}
+    - target: {fileID: 7216300665890643551, guid: 74d50294ae94455449cb4897a635f834, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74d50294ae94455449cb4897a635f834, type: 3}

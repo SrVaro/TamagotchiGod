@@ -104,7 +104,7 @@
   ],
   "populationDialogue": [
     {
-      "name": "1",
+      "name": "basePopulation",
       "evt": false,
       "linePool": [
         "Adan: Macho, tenia que ser el primero en esto, vaya aburrimiento",
@@ -112,6 +112,14 @@
         "Adan: zzZZZZzzzZzzzZZzZzz",
         "Adan: Eres un cabrón hijo puta \n un mamón y un pedorretas hijo puta \n Tu eres un capullo y un cabrón \n te jodes por ser tan mamón",
         "* Ves a Adan irse detras de un arbol y mover la mano furiosamente *"
+      ]
+    },
+    {
+      "name": "madrid",
+      "evt": false,
+      "linePool": [
+        "Madrid lleva existiendo solo un dia y Adan no para de hablar sobre algo llamado \"bocata de calamares\"",
+        "Relaxing cup of cafe con leche"
       ]
     }
   ],
@@ -125,13 +133,30 @@
       ],
       "blessing": [
         "Coges un costilla de Adan y a partir de ella creas a Eva, la primera humana",
-        "FeIncrement-1",
-        "PopulationIncrement-1"
+        "FeIncrement-5",
+        "PopulationIncrement-5"
       ],
       "punishment": [
         "Partes por la mitad a Adan y lo clonas, ahora hay dos Adan... \n Se odian",
-        "FeDecriment-1",
-        "PopulationIncrement-1"
+        "FeDecriment-5",
+        "PopulationIncrement-5"
+      ]
+    },
+    {
+      "name": "firstLand",
+      "evtLine": "Tu planeta esta tranquilo, demasiado tranquilo, es hora de crear algun lugar en el que puedan vivir tus primeros humanos",
+      "evt": true,
+      "interactions": [
+        "WaitForActionInput"
+      ],
+      "blessing": [
+        "Con todo tu conocimiento de diseño de exteriores (Basicamente ninguno) creas \"El Paraiso\"",
+        "CultureIncrement-5"
+      ],
+      "punishment": [
+        "Piensas que ya hay suficiente zonas verdes, asi que creas lo unico que puede contrarestar eso: \"Madrid\"",
+        "CultureDecriment-5",
+        "unlock-madrid"
       ]
     }
   ]
