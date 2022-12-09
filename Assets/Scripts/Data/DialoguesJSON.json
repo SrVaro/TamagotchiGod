@@ -75,7 +75,7 @@
     },
     {
       "name": "10",
-      "evtLine": "Coges un poco de tierra y agua, lo mezclas bien y creas el primer humano",
+      "evtLine": "*Coges un poco de tierra y agua, lo mezclas bien y creas el primer humano*",
       "evt": false,
       "interactions": [
         "CharacterLeft",
@@ -121,6 +121,20 @@
         "Madrid lleva existiendo solo un dia y Adan no para de hablar sobre algo llamado \"bocata de calamares\"",
         "Relaxing cup of cafe con leche"
       ]
+    },
+    {
+      "name": "eva",
+      "evt": false,
+      "linePool": [
+        "Adan y Evan vivieron felices y comieron perdices"
+      ]
+    },
+    {
+      "name": "eva-madrid",
+      "evt": false,
+      "linePool": [
+        "Adan no para de hablarle a Eva sobre el agua en Madrid y algo llamado criptocosas..."
+      ]
     }
   ],
   "eventDialogue": [
@@ -134,12 +148,14 @@
       "blessing": [
         "Coges un costilla de Adan y a partir de ella creas a Eva, la primera humana",
         "FeIncrement-5",
-        "PopulationIncrement-5"
+        "PopulationIncrement-5",
+        "unlock-eva"
       ],
       "punishment": [
         "Partes por la mitad a Adan y lo clonas, ahora hay dos Adan... \n Se odian",
         "FeDecriment-5",
-        "PopulationIncrement-5"
+        "PopulationIncrement-5",
+        "unlock-clon"
       ]
     },
     {

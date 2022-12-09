@@ -15,23 +15,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private UIController uiController;
 
-    [SerializeField]
-    private GameObject cutsceneBackground;
-
-    [SerializeField]
-    private GameObject pointerAtBlessing;
-
-    [SerializeField]
-    private GameObject pointerAtPopulation;
-
-    [SerializeField]
-    private GameObject characterLeft;
-
-    [SerializeField]
-    private GameObject characterRight;
-
     #region STATS
-    private float _energy = 1;
+    private float _energy = 0;
     public float PlanetEnergy
     {
         get { return _energy; }
@@ -42,7 +27,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float _water = 1;
+    private float _water = 0;
     public float PlanetWater
     {
         get { return _water; }
@@ -53,7 +38,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float _faith = 1;
+    private float _faith = 0;
     public float PlanetFaith
     {
         get { return _faith; }
@@ -64,7 +49,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float _culture = 1;
+    private float _culture = 0;
     public float PlanetCulture
     {
         get { return _faith; }
@@ -75,7 +60,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float _souls = 1;
+    private float _souls = 0;
     public float PlanetSouls
     {
         get { return _souls; }
@@ -86,7 +71,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float _science = 1;
+    private float _science = 0;
     public float PlanetScience
     {
         get { return _science; }
@@ -97,7 +82,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private int _year;
+    private int _year = 0;
     public int PlanetYear
     {
         get { return _year; }
@@ -108,31 +93,19 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private int _population;
+    private int _population = 0;
     public int PlanetPopulation
     {
         get { return _population; }
         set
         {
             _population = value;
-            if (_population == 1)
-            {
-                growRate = 1;
-            }
-            else if (_population >= 2 && _population <= 5)
-            {
-                growRate = 2;
-            }
-            else if (_population > 5 && _population <= 20)
-            {
-                growRate = 5;
-            }
 
             uiController.populationText = PlanetPopulation.ToString();
         }
     }
 
-    private int _coins;
+    private int _coins = 0;
     public int PlanetCoins
     {
         get { return _coins; }
@@ -157,40 +130,23 @@ public class GameController : MonoBehaviour
     private bool screenClicked;
     private bool blessingClicked;
     private bool punishmentClicked;
-    private bool paused = false;
 
-    private int growRate = 1;
-
-    //private float cooldownTime = 0;
-
-    //[SerializeField]
-    //private float clickCooldown = 3;
+    private bool _paused = false;
+    public bool PauseGame
+    {
+        get { return _paused; }
+        set { _paused = value; }
+    }
 
     public void Interaction()
     {
         if (uiController.PlanetEvent)
         {
             uiController.PlanetEvent = false;
-            //PlanetEnergy += 0.1f;
-            //PlanetWater += 0.1f;
-            //PlanetTemp += 0.1f;
+            uiController.ActionFocus = true;
             PlanetCoins += 5;
 
-            List<Dialogue> avalibleDialogues = new List<Dialogue>();
-            foreach (var eventDialogue in dialogueList.eventDialogue)
-            {
-                if (eventVariables[eventDialogue.name])
-                {
-                    avalibleDialogues.Add(eventDialogue);
-                }
-            }
-            FindDialogue(avalibleDialogues, true);
-            /*
-            if (growRate == 1)
-                PlanetPopulation += 1;
-            else
-                PlanetPopulation += UnityEngine.Random.Range(0, growRate);
-            */
+            PickRandomDialogue(GetUnlockedDialogues(dialogueList.eventDialogue), true);
         }
     }
 
@@ -208,8 +164,8 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        inputManager = InputManager.Instance;
         Application.targetFrameRate = 60;
+        inputManager = InputManager.Instance;
         dialogueList = jsonReader.dialogueList;
         //LoadGameData();
         TickSystemInit();
@@ -220,13 +176,12 @@ public class GameController : MonoBehaviour
         // Nos subscribimos al evento OnTick, para ejecutar logica del juego en cada Tick
         TimeTickSystem.OnTick += delegate(object sender, TimeTickSystem.OnTickEventArgs e)
         {
-            if (!paused)
+            if (!PauseGame)
             {
-                //this.LogLog("--- TICK --- " + e.tick % tickPerYear);
-
+                // Debug.Log("--- TICK --- " + e.tick % tickPerYear);
                 if ((e.tick % tickPerYear) == 0)
                 {
-                    //this.LogLog("--- YEAR ---");
+                    // Debug.Log("--- YEAR ---");
                     ProcessYear(1);
                 }
             }
@@ -235,76 +190,79 @@ public class GameController : MonoBehaviour
 
     private void ProcessYear(int years)
     {
-        //this.LogLog("Years passed: " + years);
+        // Debug.Log("Years passed: " + years);
         for (int i = 0; i < years; i++)
         {
             PlanetYear++;
             if (PlanetYear % 5 == 0)
             {
-                //PlanetEnergy -= 0.01f;
-                PlanetWater -= 0.01f;
-                //PlanetFe -= 0.01f;
-
-                //if (PlanetEnergy > 0.25f && PlanetWater > 0.25f && PlanetFe > 0.25f)
-                //{
-                //    PlanetPopulation += UnityEngine.Random.Range(0, PlanetPopulation);
-                //}
-
                 uiController.PlanetEvent = true;
             }
         }
 
-        List<Dialogue> avalibleDialogues = new List<Dialogue>();
-        foreach (var populationDialogue in dialogueList.populationDialogue)
-        {
-            if (eventVariables[populationDialogue.name])
-            {
-                avalibleDialogues.Add(populationDialogue);
-                Debug.Log("Population dialogue " + populationDialogue.name);
-            }
-        }
-
-        FindDialogue(avalibleDialogues, false);
+        PickRandomDialogue(GetUnlockedDialogues(dialogueList.populationDialogue), false);
 
         SaveGameData();
     }
 
-    private void FindDialogue(List<Dialogue> dialogues, bool evt)
+    private List<Dialogue> GetUnlockedDialogues(List<Dialogue> dialogues)
+    {
+        List<Dialogue> avalibleDialogues = new List<Dialogue>();
+        foreach (var populationDialogue in dialogues)
+        {
+            if (populationDialogue.name.Contains('-'))
+            {
+                string[] aux = populationDialogue.name.Split('-');
+                bool dialogueUnlocked = true;
+                foreach (var elem in aux)
+                {
+                    if (eventVariables.ContainsKey(elem))
+                    {
+                        if (!eventVariables[elem])
+                        {
+                            dialogueUnlocked = false;
+                        }
+                    }
+                    else
+                    {
+                        eventVariables.Add(populationDialogue.name, false);
+                        dialogueUnlocked = false;
+                    }
+                }
+
+                if (dialogueUnlocked)
+                    avalibleDialogues.Add(populationDialogue);
+            }
+            else
+            {
+                if (eventVariables.ContainsKey(populationDialogue.name))
+                {
+                    if (eventVariables[populationDialogue.name])
+                    {
+                        avalibleDialogues.Add(populationDialogue);
+                    }
+                }
+                else
+                {
+                    eventVariables.Add(populationDialogue.name, false);
+                }
+            }
+        }
+        return avalibleDialogues;
+    }
+
+    private void PickRandomDialogue(List<Dialogue> dialogues, bool evt)
     {
         int population = PlanetPopulation;
 
         if (!evt)
         {
-            foreach (Dialogue dialogue in dialogues)
-            {
-                if (!dialogue.name.Contains('-'))
-                {
-                    var rndLine = dialogue.linePool[
-                        (int)UnityEngine.Random.Range(0, dialogue.linePool.Length)
-                    ];
+            var rndDialogueList = dialogues[(int)UnityEngine.Random.Range(0, dialogues.Count)];
+            var rndLine = rndDialogueList.linePool[
+                (int)UnityEngine.Random.Range(0, rndDialogueList.linePool.Length)
+            ];
 
-                    uiController.ShowDialogue(rndLine);
-                }
-                else
-                {
-                    string[] populationRange = dialogue.name.Split("-");
-                    if (
-                        population >= int.Parse(populationRange[0])
-                        && population <= int.Parse(populationRange[1])
-                    )
-                    {
-                        //this.LogLog(
-                        //    "Population Range: " + populationRange[0] + ", " + populationRange[1]
-                        //);
-
-                        var rndLine = dialogue.linePool[
-                            (int)UnityEngine.Random.Range(0, dialogue.linePool.Length)
-                        ];
-
-                        uiController.ShowDialogue(rndLine);
-                    }
-                }
-            }
+            uiController.ShowDialogue(rndLine);
         }
         else
         {
@@ -325,8 +283,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator RunEventDialogue(List<Dialogue> eventDialogues)
     {
-        paused = true;
-        //bless
+        PauseGame = true;
         screenClicked = false;
         blessingClicked = false;
         punishmentClicked = false;
@@ -335,7 +292,7 @@ public class GameController : MonoBehaviour
         {
             var eventElement = eventDialogues[i];
 
-            //Debug.Log("Line actual: " + eventElement.evtLine);
+            ////Debug.Log("Line actual: " + eventElement.evtLine);
 
             foreach (var interaction in eventElement.interactions)
             {
@@ -371,13 +328,15 @@ public class GameController : MonoBehaviour
                             Actions(eventElement.punishment[j]);
                         }
                     }
+
+                    uiController.ActionFocus = false;
                 }
                 else if (interaction == "WaitForBlessingInput")
                 {
                     uiController.ShowDialogue(eventElement.evtLine);
                     yield return new WaitUntil(IsBlessingClicked);
                     blessingClicked = false;
-                    pointerAtBlessing.SetActive(false);
+                    uiController.PointerAtBlessing = false;
                     PlanetPopulation = 1;
                 }
                 else if (interaction == "WaitForPunishmentInput")
@@ -388,36 +347,37 @@ public class GameController : MonoBehaviour
                 }
                 else if (interaction == "PointAtBlessing")
                 {
-                    cutsceneBackground.SetActive(false);
-                    pointerAtBlessing.SetActive(true);
+                    uiController.ActionFocus = true;
+                    uiController.CutsceneBackground = false;
+                    uiController.PointerAtBlessing = true;
                 }
                 else if (interaction == "PointAtPopulation")
                 {
-                    cutsceneBackground.SetActive(false);
-                    pointerAtPopulation.SetActive(true);
+                    uiController.CutsceneBackground = false;
+                    uiController.PointerAtPopulation = true;
                 }
                 else if (interaction == "CharacterLeft")
                 {
-                    cutsceneBackground.SetActive(true);
-                    characterRight.SetActive(false);
-                    characterLeft.SetActive(true);
+                    uiController.CutsceneBackground = true;
+                    uiController.CharacterRight = false;
+                    uiController.CharacterLeft = true;
                 }
                 else if (interaction == "CharacterRight")
                 {
-                    cutsceneBackground.SetActive(true);
-                    characterLeft.SetActive(false);
-                    characterRight.SetActive(true);
+                    uiController.CutsceneBackground = true;
+                    uiController.CharacterLeft = false;
+                    uiController.CharacterRight = true;
                 }
             }
         }
 
-        paused = false;
+        PauseGame = false;
         endTutorial();
     }
 
     public void Actions(string action)
     {
-        Debug.Log(action);
+        ////Debug.Log(action);
         string[] aux = action.Split('-');
         if (aux[0] == "FeIncrement")
         {
@@ -430,34 +390,43 @@ public class GameController : MonoBehaviour
         else if (aux[0] == "PopulationIncrement")
         {
             PlanetPopulation += int.Parse(aux[1]);
-        }else if (aux[0] == "PopulationDecriment")
+        }
+        else if (aux[0] == "PopulationDecriment")
         {
             PlanetPopulation -= int.Parse(aux[1]);
-        }else if (aux[0] == "CultureIncrement")
+        }
+        else if (aux[0] == "CultureIncrement")
         {
             PlanetCulture += int.Parse(aux[1]);
-        }else if (aux[0] == "CultureDecriment")
+        }
+        else if (aux[0] == "CultureDecriment")
         {
             PlanetCulture -= int.Parse(aux[1]);
-        }else if (aux[0] == "ScienceIncrement")
+        }
+        else if (aux[0] == "ScienceIncrement")
         {
             PlanetScience += int.Parse(aux[1]);
-        }else if (aux[0] == "ScienceDecriment")
+        }
+        else if (aux[0] == "ScienceDecriment")
         {
             PlanetScience -= int.Parse(aux[1]);
-        } else if(aux[0] == "unlock") {
-            Debug.Log("unlock: " + eventVariables[aux[1]]);
-            eventVariables[aux[1]] = true;
+        }
+        else if (aux[0] == "unlock")
+        {
+            if (eventVariables.ContainsKey(aux[1]))
+            {
+                eventVariables[aux[1]] = true;
+            }
+            else
+            {
+                eventVariables.Add(aux[1], true);
+            }
         }
     }
 
     public void Click(Vector2 mousePos, float time)
     {
-        //if (time > cooldownTime)
-        //{
         screenClicked = true;
-        //cooldownTime = time + clickCooldown;
-        //}
     }
 
     private bool IsScreenClicked()
@@ -482,26 +451,18 @@ public class GameController : MonoBehaviour
 
     public void Blessing()
     {
-        //if ((PlanetEnergy -= 0.25f) >= 0)
-        //{
         blessingClicked = true;
-        //PlanetEnergy -= 0.25f;
-        //}
     }
 
     public void Punishment()
     {
-        //if ((PlanetEnergy -= 0.25f) >= 0)
-        //{
         punishmentClicked = true;
-        //PlanetEnergy -= 0.25f;
-        //}
     }
 
     public void SaveGameData()
     {
-        //this.LogLog("--- SAVE ---");
-        ////this.LogLog("Archivo creado en " + Application.persistentDataPath + "/gameDataContainer.dat");
+        //Debug.Log("--- SAVE ---");
+        ////Debug.Log("Archivo creado en " + Application.persistentDataPath + "/gameDataContainer.dat");
         // Se crea/sustituye el archivo del sistema (Windows/Android/IOs/Etc...)
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(
@@ -528,7 +489,7 @@ public class GameController : MonoBehaviour
 
     public void LoadGameData()
     {
-        //this.LogLog("--- LOAD ---");
+        //Debug.Log("--- LOAD ---");
         // Si no existe el archivo se crea uno nuevo y se inicializan las estadisticas (Primera vez que se inicia el juego)
         dialogueList = jsonReader.dialogueList;
 
@@ -555,7 +516,7 @@ public class GameController : MonoBehaviour
             eventVariables = gd.dialogueVariables;
 
             // Se convierte del tiempo que se ha recuperado del fichero a ticks del juego que han transcurrido desde esa fecha hasta ahora
-            //this.LogLog(
+            //Debug.Log(
             //     "Ticks passed: " + ((int)(DateTime.Now - savedTime).TotalSeconds / tickPerYear)
             //);
             uiController.LoadPopup = (
@@ -566,8 +527,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            //this.LogLog("--- FAILED LOAD ---");
-            //this.LogLog(
+            //Debug.Log("--- FAILED LOAD ---");
+            //Debug.Log(
             //    "No existe el archivo en "
             //        + Application.persistentDataPath
             //       + "/gameDataContainer.dat"
@@ -578,7 +539,7 @@ public class GameController : MonoBehaviour
 
     /*
      *  Reset Game State to 0
-     *  Used when the the application is opened the first time (No save data) and for debugging reasons
+     *  Used when the the application is opened the first time (No save data) and for //Debugging reasons
      */
     public void InitializeGameData()
     {
@@ -603,31 +564,32 @@ public class GameController : MonoBehaviour
 
     void startTutorial()
     {
-        paused = true;
-        cutsceneBackground.SetActive(true);
+        PauseGame = true;
+        uiController.CutsceneBackground = true;
         StartCoroutine("RunEventDialogue", dialogueList.tutorialDialogue);
     }
 
     void endTutorial()
     {
-        paused = false;
-        characterLeft.SetActive(false);
-        characterRight.SetActive(false);
-        pointerAtBlessing.SetActive(false);
-        cutsceneBackground.SetActive(false);
-        pointerAtPopulation.SetActive(false);
+        PauseGame = false;
+        uiController.CharacterLeft = false;
+        uiController.CharacterRight = false;
+        uiController.PointerAtBlessing = false;
+        uiController.CutsceneBackground = false;
+        uiController.PointerAtPopulation = false;
+        uiController.ActionFocus = false;
     }
 
     void OnApplicationFocus(bool hasFocus)
     {
         if (hasFocus)
         {
-            //this.LogLog("App Status: Has focus");
+            //Debug.Log("App Status: Has focus");
             LoadGameData();
         }
         else
         {
-            //this.LogLog("App Status: Lost focus");
+            //Debug.Log("App Status: Lost focus");
             SaveGameData();
         }
     }
@@ -639,25 +601,25 @@ public class GameController : MonoBehaviour
     {
         if (pauseStatus)
         {
-            //this.LogLog("App Status: Paused");
+            //Debug.Log("App Status: Paused");
             SaveGameData();
         }
         else
         {
-            ////this.LogLog("Resumed");
+            ////Debug.Log("Resumed");
             //LoadGameData();
         }
     }
 
     void OnApplicationQuit()
     {
-        //this.LogLog("App Status: Closed");
+        //Debug.Log("App Status: Closed");
         SaveGameData();
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //this.LogLog("App Status: Opened");
+        //Debug.Log("App Status: Opened");
         LoadGameData();
     }
 }

@@ -9,6 +9,57 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [SerializeField]
+    private GameController gameController;
+
+    [SerializeField]
+    private GameObject _actionFocus;
+    public bool ActionFocus
+    {
+        get { return _actionFocus.activeSelf; }
+        set { _actionFocus.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _cutsceneBackground;
+    public bool CutsceneBackground
+    {
+        get { return _cutsceneBackground.activeSelf; }
+        set { _cutsceneBackground.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _pointerAtBlessing;
+    public bool PointerAtBlessing
+    {
+        get { return _pointerAtBlessing.activeSelf; }
+        set { _pointerAtBlessing.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _pointerAtPopulation;
+    public bool PointerAtPopulation
+    {
+        get { return _pointerAtPopulation.activeSelf; }
+        set { _pointerAtPopulation.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _characterLeft;
+    public bool CharacterLeft
+    {
+        get { return _characterLeft.activeSelf; }
+        set { _characterLeft.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _characterRight;
+    public bool CharacterRight
+    {
+        get { return _characterRight.activeSelf; }
+        set { _characterRight.SetActive(value); }
+    }
+
+    [SerializeField]
     private GameObject _planetEvent;
     public bool PlanetEvent
     {
@@ -69,7 +120,7 @@ public class UIController : MonoBehaviour
         set { _cultureText.text = value + " <sprite=4>"; }
     }
 
-  [SerializeField]
+    [SerializeField]
     private TextMeshProUGUI _scienceText;
     public string scienceText
     {
@@ -109,7 +160,14 @@ public class UIController : MonoBehaviour
     public bool ShopPanel
     {
         get { return _shopPanel.activeSelf; }
-        set { _shopPanel.SetActive(value); }
+        set
+        {
+            _shopPanel.SetActive(value);
+            if (ShopPanel)
+                gameController.PauseGame = true;
+            else
+                gameController.PauseGame = false;
+        }
     }
 
     private TypewriterEffect typewriterEffect;
