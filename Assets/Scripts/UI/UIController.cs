@@ -12,6 +12,30 @@ public class UIController : MonoBehaviour
     private GameController gameController;
 
     [SerializeField]
+    private GameObject _happinessNeed;
+    public bool HappinessNeed
+    {
+        get { return _happinessNeed.activeSelf; }
+        set { _happinessNeed.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _sleepNeed;
+    public bool SleepNeed
+    {
+        get { return _sleepNeed.activeSelf; }
+        set { _sleepNeed.SetActive(value); }
+    }
+
+    [SerializeField]
+    private ParticleSystem _hygieneNeed;
+    public ParticleSystem HygieneNeed
+    {
+        get { return _hygieneNeed; }
+        set { _hygieneNeed = value; }
+    }
+
+    [SerializeField]
     private GameObject _actionFocus;
     public bool ActionFocus
     {
@@ -196,10 +220,40 @@ public class UIController : MonoBehaviour
         return finalValue;
     }
 
+    public void incrementHappiness()
+    {
+        if (gameController.PlanetEnergy >= 0.25f && gameController.PlanetEnergy > 0)
+        {
+            gameController.PlanetEnergy -= 0.25f;
+            gameController.PlanetHappiness += 0.15f;
+        }
+    }
+
+    public void incrementSleep()
+    {
+        if (gameController.PlanetEnergy >= 0.25f && gameController.PlanetSleep > 0)
+        {
+            gameController.PlanetSleep += 0.15f;
+            gameController.PlanetEnergy -= 0.25f;
+        }
+    }
+
+    public void incrementHygiene()
+    {
+        if (gameController.PlanetEnergy >= 0.25f && gameController.PlanetHygiene > 0)
+        {
+            gameController.PlanetHygiene += 0.15f;
+            gameController.PlanetEnergy -= 0.25f;
+        }
+    }
+
     public void ShowDialogue(string dialogueArray)
     {
-        textLabel.text = "";
-        typewriterCoroutine = StartCoroutine(StepThroughDialogue(dialogueArray));
+        if (gameController.PlanetEnergy >= 0)
+        {
+            textLabel.text = "";
+            typewriterCoroutine = StartCoroutine(StepThroughDialogue(dialogueArray));
+        }
     }
 
     private IEnumerator StepThroughDialogue(string dialogueArray)
@@ -221,17 +275,24 @@ public class UIController : MonoBehaviour
         get { return _energyMat.material.GetFloat("_Delta"); }
         set { _energyMat.material.SetFloat("_Delta", value); }
     }
-    public Image _waterMat;
-    public float Water
+    public Image _sleepMat;
+    public float Sleep
     {
-        get { return _waterMat.material.GetFloat("_Delta"); }
-        set { _waterMat.material.SetFloat("_Delta", value); }
+        get { return _sleepMat.material.GetFloat("_Delta"); }
+        set { _sleepMat.material.SetFloat("_Delta", value); }
     }
-    public Image _tempMat;
-    public float Temp
+    public Image _hygieneMat;
+    public float Hygiene
     {
-        get { return _tempMat.material.GetFloat("_Delta"); }
-        set { _tempMat.material.SetFloat("_Delta", value); }
+        get { return _hygieneMat.material.GetFloat("_Delta"); }
+        set { _hygieneMat.material.SetFloat("_Delta", value); }
+    }
+
+    public Image _happinessMat;
+    public float Happiness
+    {
+        get { return _happinessMat.material.GetFloat("_Delta"); }
+        set { _happinessMat.material.SetFloat("_Delta", value); }
     }
 
     void Awake()

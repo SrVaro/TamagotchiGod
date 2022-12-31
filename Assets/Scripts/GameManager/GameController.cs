@@ -27,14 +27,64 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private float _water = 0;
-    public float PlanetWater
+    private float _hygiene = 0;
+    public float PlanetHygiene
     {
-        get { return _water; }
+        get { return _hygiene; }
         set
         {
-            _water = Mathf.Clamp(value, 0, 1);
-            uiController.Water = _water;
+            _hygiene = Mathf.Clamp(value, 0, 1);
+            if (_hygiene >= 0f && _hygiene < 0.33f)
+            {
+                uiController.HygieneNeed.startLifetime = 7f;
+            }
+            else if (_hygiene >= 0.25f && _hygiene < 0.66f)
+            {
+                uiController.HygieneNeed.startLifetime = 3.5f;
+            }
+            else if (_hygiene >= 0.66f)
+            {
+                uiController.HygieneNeed.startLifetime = 0f;
+            }
+            uiController.Hygiene = _hygiene;
+        }
+    }
+
+    private float _sleep = 0;
+    public float PlanetSleep
+    {
+        get { return _sleep; }
+        set
+        {
+            _sleep = Mathf.Clamp(value, 0, 1);
+            if (_sleep < 0.5f)
+            {
+                uiController.SleepNeed = true;
+            }
+            else
+            {
+                uiController.SleepNeed = false;
+            }
+            uiController.Sleep = _sleep;
+        }
+    }
+
+    private float _happiness = 0;
+    public float PlanetHappiness
+    {
+        get { return _happiness; }
+        set
+        {
+            _happiness = Mathf.Clamp(value, 0, 1);
+            if (_happiness < 0.5f)
+            {
+                uiController.HappinessNeed = true;
+            }
+            else
+            {
+                uiController.HappinessNeed = false;
+            }
+            uiController.Happiness = _happiness;
         }
     }
 
@@ -138,6 +188,8 @@ public class GameController : MonoBehaviour
         set { _paused = value; }
     }
 
+    private float growRate = 0.25f;
+
     public void Interaction()
     {
         if (uiController.PlanetEvent)
@@ -145,7 +197,7 @@ public class GameController : MonoBehaviour
             uiController.PlanetEvent = false;
             uiController.ActionFocus = true;
             PlanetCoins += 5;
-
+            PlanetEnergy += 0.5f;
             PickRandomDialogue(GetUnlockedDialogues(dialogueList.eventDialogue), true);
         }
     }
@@ -194,9 +246,27 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < years; i++)
         {
             PlanetYear++;
-            if (PlanetYear % 5 == 0)
+            if (PlanetYear % 5 == 0 && GetUnlockedDialogues(dialogueList.eventDialogue).Count > 0)
             {
                 uiController.PlanetEvent = true;
+            }
+
+            PlanetHappiness -= 0.05f;
+            PlanetHygiene -= 0.05f;
+            PlanetSleep -= 0.05f;
+
+            if (PlanetPopulation >= 4)
+            {
+                if ((PlanetHappiness + PlanetHygiene + PlanetSleep) >= 1.5f)
+                {
+                    PlanetPopulation +=
+                        ((int)(PlanetPopulation * Math.Pow(Math.E, 0.25f))) - PlanetPopulation;
+                }
+                else
+                {
+                    PlanetPopulation -=
+                        ((int)(PlanetPopulation * Math.Pow(Math.E, 0.2f))) - PlanetPopulation;
+                }
             }
         }
 
@@ -337,7 +407,7 @@ public class GameController : MonoBehaviour
                     yield return new WaitUntil(IsBlessingClicked);
                     blessingClicked = false;
                     uiController.PointerAtBlessing = false;
-                    PlanetPopulation = 1;
+                    PlanetPopulation = 2;
                 }
                 else if (interaction == "WaitForPunishmentInput")
                 {
@@ -475,7 +545,9 @@ public class GameController : MonoBehaviour
         gd.savedTime = DateTime.Now;
         gd.year = PlanetYear;
         gd.energy = PlanetEnergy;
-        gd.water = PlanetWater;
+        gd.happiness = PlanetHappiness;
+        gd.sleep = PlanetSleep;
+        gd.hygiene = PlanetHygiene;
         gd.faith = PlanetFaith;
         gd.culture = PlanetCulture;
         gd.science = PlanetScience;
@@ -507,7 +579,9 @@ public class GameController : MonoBehaviour
             DateTime savedTime = gd.savedTime;
             PlanetYear = gd.year;
             PlanetEnergy = gd.energy;
-            PlanetWater = gd.water;
+            PlanetHappiness = gd.happiness;
+            PlanetSleep = gd.sleep;
+            PlanetHygiene = gd.hygiene;
             PlanetFaith = gd.faith;
             PlanetCulture = gd.culture;
             PlanetScience = gd.science = PlanetScience;
@@ -547,8 +621,10 @@ public class GameController : MonoBehaviour
         PlanetPopulation = 0;
         PlanetCoins = 0;
 
-        PlanetEnergy = 0;
-        PlanetWater = 0;
+        PlanetEnergy = 1;
+        PlanetHappiness = 1;
+        PlanetHygiene = 1;
+        PlanetSleep = 1;
         PlanetFaith = 0;
         PlanetCulture = 0;
         PlanetScience = 0;

@@ -7,7 +7,9 @@ public class GameDataContainer
     public DateTime savedTime;
     public int year;
     public float energy;
-    public float water;
+    public float happiness;
+    public float hygiene;
+    public float sleep;
     public float faith;
     public float culture;
     public float science;

@@ -148,13 +148,13 @@
       "blessing": [
         "Coges un costilla de Adan y a partir de ella creas a Eva, la primera humana",
         "FeIncrement-5",
-        "PopulationIncrement-5",
+        "PopulationIncrement-1",
         "unlock-eva"
       ],
       "punishment": [
         "Partes por la mitad a Adan y lo clonas, ahora hay dos Adan... \n Se odian",
         "FeDecriment-5",
-        "PopulationIncrement-5",
+        "PopulationIncrement-1",
         "unlock-clon"
       ]
     },
@@ -170,9 +170,29 @@
         "CultureIncrement-5"
       ],
       "punishment": [
-        "Piensas que ya hay suficiente zonas verdes, asi que creas lo unico que puede contrarestar eso: \"Madrid\"",
+        "Piensas que tus humanos son suficientemente inteligentes, les dejas crear su propio asentamiento",
         "CultureDecriment-5",
         "unlock-madrid"
+      ]
+    },
+    {
+      "name": "eva",
+      "evtLine": "Adan y Eva inventan el incesto el incesto",
+      "evt": true,
+      "interactions": [
+        "WaitForActionInput"
+      ],
+      "blessing": [
+        "Stupid ass people",
+        "FeIncrement-5",
+        "PopulationIncrement-2",
+        "unlock-eva"
+      ],
+      "punishment": [
+        "Separas a los nuevos humanos en continentes separados, a ver si dejan de joder la marrana",
+        "FeDecriment-5",
+        "PopulationIncrement-2",
+        "unlock-clon"
       ]
     }
   ]
