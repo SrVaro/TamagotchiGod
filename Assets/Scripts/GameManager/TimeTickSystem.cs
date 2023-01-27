@@ -13,7 +13,7 @@ public class TimeTickSystem : MonoBehaviour
     public static event EventHandler<OnTickEventArgs> OnTick;
 
     [SerializeField]
-    private float tickPerSecond = 60f;
+    private float secondsPerTick = 60f;
 
     private int tick;
     private float tickTimer;
@@ -27,10 +27,10 @@ public class TimeTickSystem : MonoBehaviour
     void Update()
     {
         tickTimer += Time.deltaTime;
-        if (tickTimer >= tickPerSecond)
+        if (tickTimer >= secondsPerTick)
         {
             //Debug.Log("1 min");
-            tickTimer -= tickPerSecond;
+            tickTimer -= secondsPerTick;
             tick++;
             if (OnTick != null)
                 OnTick(this, new OnTickEventArgs { tick = tick });

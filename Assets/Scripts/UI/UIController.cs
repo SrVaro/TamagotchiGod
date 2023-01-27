@@ -28,11 +28,27 @@ public class UIController : MonoBehaviour
     }
 
     [SerializeField]
-    private ParticleSystem _hygieneNeed;
-    public ParticleSystem HygieneNeed
+    private GameObject _hygieneLowNeed;
+    public bool HygieneLowNeed
     {
-        get { return _hygieneNeed; }
-        set { _hygieneNeed = value; }
+        get { return _hygieneLowNeed.activeSelf; }
+        set { _hygieneLowNeed.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _hygieneMidNeed;
+    public bool HygieneMidNeed
+    {
+        get { return _hygieneMidNeed.activeSelf; }
+        set { _hygieneMidNeed.SetActive(value); }
+    }
+
+    [SerializeField]
+    private GameObject _hygieneHighNeed;
+    public bool HygieneHighNeed
+    {
+        get { return _hygieneHighNeed.activeSelf; }
+        set { _hygieneHighNeed.SetActive(value); }
     }
 
     [SerializeField]
@@ -242,7 +258,7 @@ public class UIController : MonoBehaviour
     {
         if (gameController.PlanetEnergy >= 0.25f && gameController.PlanetHygiene > 0)
         {
-            gameController.PlanetHygiene += 0.15f;
+            gameController.PlanetHygiene += 1f;
             gameController.PlanetEnergy -= 0.25f;
         }
     }

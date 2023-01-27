@@ -33,20 +33,31 @@ public class GameController : MonoBehaviour
         get { return _hygiene; }
         set
         {
-            _hygiene = Mathf.Clamp(value, 0, 1);
-            if (_hygiene >= 0f && _hygiene < 0.33f)
+            _hygiene = Mathf.Clamp(value, 0, 4);
+            if (_hygiene >= 0f && _hygiene < 1f)
             {
-                uiController.HygieneNeed.startLifetime = 7f;
+                uiController.HygieneHighNeed = true;
+                uiController.HygieneMidNeed = true;
+                uiController.HygieneLowNeed = true;
             }
-            else if (_hygiene >= 0.25f && _hygiene < 0.66f)
+            else if (_hygiene >= 1f && _hygiene < 2f)
             {
-                uiController.HygieneNeed.startLifetime = 3.5f;
+                uiController.HygieneHighNeed = false;
+                uiController.HygieneMidNeed = true;
+                uiController.HygieneLowNeed = true;
             }
-            else if (_hygiene >= 0.66f)
+            else if (_hygiene >= 2f && _hygiene < 3f)
             {
-                uiController.HygieneNeed.startLifetime = 0f;
+                uiController.HygieneHighNeed = false;
+                uiController.HygieneMidNeed = false;
+                uiController.HygieneLowNeed = true;
             }
-            uiController.Hygiene = _hygiene;
+            else if (_hygiene >= 3f)
+            {
+                uiController.HygieneHighNeed = false;
+                uiController.HygieneMidNeed = false;
+                uiController.HygieneLowNeed = false;
+            }
         }
     }
 
@@ -623,7 +634,7 @@ public class GameController : MonoBehaviour
 
         PlanetEnergy = 1;
         PlanetHappiness = 1;
-        PlanetHygiene = 1;
+        PlanetHygiene = 4;
         PlanetSleep = 1;
         PlanetFaith = 0;
         PlanetCulture = 0;
