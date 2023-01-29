@@ -99,9 +99,9 @@ public class PlanetController : MonoBehaviour
             {
                 gameController.Interaction();
                 LeanTween.cancel(gameObject);
-                transform.localScale = new Vector3(1f, 1f, 1f);
+                transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
                 LeanTween
-                    .scale(gameObject, new Vector3(1.2f, 1.2f), 1.2f)
+                    .scale(gameObject, new Vector3(1.3f, 1.3f), 1.3f)
                     .setEase(LeanTweenType.punch);
             }
         }

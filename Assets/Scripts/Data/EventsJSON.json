@@ -1,0 +1,22 @@
+{
+  "eventDialogue": [
+    {
+      "name": "1",
+      "evtLine": "Sientes la soledad de Adan, quizas puedas hacer algo para que no se sienta tan solo...",
+      "evt": true,
+      "interactions": [
+        "WaitForActionInput"
+      ],
+      "blessing": [
+        "Coges un costilla de Adan y a partir de ella creas a Eva, la primera humana",
+        "FeIncrement-1",
+        "PopulationIncrement-1"
+      ],
+      "punishment": [
+        "Partes por la mitad a Adan y lo clonas, ahora hay dos Adan... \n Se odian",
+        "FeDecriment-1",
+        "PopulationIncrement-1"
+      ]
+    }
+  ]
+}
